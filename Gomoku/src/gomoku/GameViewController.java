@@ -202,6 +202,7 @@ public class GameViewController implements Runnable{
         view.appendMoveStatus("Move Deselected");
     }
     
+    // method to clear move status text area
     public void clearStatus(){
         view.clearMoveStatus();
     }
