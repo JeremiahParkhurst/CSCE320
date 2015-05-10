@@ -17,6 +17,9 @@ import javax.swing.JTextArea;
  * that they have typed in the textField, which will be displayed to the the
  * textArea by calling the actionlistener methods in this class which calls
  * the methods in the GameController.
+ * This class also has the view of the chat components and some of the 
+ * GameBoardView components, such as a text area to display whether a valid move
+ * has been made.
  * This view has the send message button and the game board which displays
  * the Gomoku game.
  */
@@ -40,14 +43,25 @@ public class GameView extends javax.swing.JPanel {
         user = name;
     }
     
+    /**
+     * Post the player's text messages onto the text area
+     * @param msg, the message to be sent
+     */
     public void appendChat(String msg){
         txtLog.append(msg + "\n");
     }
     
+    /**
+     * Appends a message such as "illegal move", or "valid move" to text area
+     * @param msg, the message to be displayed on the status text area
+     */
     public void appendMoveStatus(String msg){
         statusTextArea.append(msg);
     }
     
+    /**
+     * Clears the statusTextArea
+     */
     public void clearMoveStatus(){
         statusTextArea.setText(null);
     }
@@ -157,29 +171,30 @@ public class GameView extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     
-    
+    /**
+     * Appends the player's username and their message to the txtLog
+     * Clears the txtToSend textArea after the message has been sent
+     * @param evt
+     */
     private void txtToSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtToSendActionPerformed
         String msg = txtToSend.getText();
         String formattedMsg = "M, " + msg;
-        
         vcon.sendMsg(formattedMsg);
         txtLog.append(user + ": " + msg + "\n");
         txtToSend.setText("");
     }//GEN-LAST:event_txtToSendActionPerformed
     
     /**
-     * send
-     * check to see if win condition, calls the win shiz
      * @param evt
      */
     private void sendMoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMoveButtonActionPerformed
+        //TODO
         //successful move changes yellow cells --> black cells
         // take cell number (row and column)
         // check to see if there is a win condition
         // if yes, sendMsg that starts with 'W' which will end the game
         // if no, sendMsg that starts with 'T' and continue to next turn
     }//GEN-LAST:event_sendMoveButtonActionPerformed
-    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel chatLabel;

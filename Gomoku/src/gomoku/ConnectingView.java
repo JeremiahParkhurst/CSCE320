@@ -78,7 +78,6 @@ public class ConnectingView extends javax.swing.JPanel {
         vcon.goBack();
     }//GEN-LAST:event_btnCancelActionPerformed
     
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JTextField txtLog;

@@ -10,7 +10,9 @@ import javax.swing.JFrame;
 
 /**
  * The GameViewController handles and listens to all actions preformed
- * from the GameView.
+ * from the GameView. Such as chat messages between players, and messages
+ * regarding their selected moves.
+ * Creates a peer-to-peer connection between two players.
  * 
  * NOTE: NOT FULLY IMPLEMENTED
  */
@@ -21,7 +23,6 @@ public class GameViewController implements Runnable{
     private DifficultyViewController vcon;
     private JFrame app;
     private JFrame WLView;
- 
     private ServerSocket serverSocket;
     private Socket socket;
     private Thread t;
@@ -53,7 +54,10 @@ public class GameViewController implements Runnable{
     }
     
     /**
-     * Creates the new serverSocket to connect to
+     * Creates the JFrame to hold the GameView (the chat JPanel) and the
+     * GameViewBoard (the game board JPanel).
+     * Attempts to create a serverSocket
+     * Starts the thread
      */
     public GameViewController(String username){
         view = new GameView(this);
@@ -65,8 +69,6 @@ public class GameViewController implements Runnable{
         app.pack();
         app.setBackground(new Color(204,204,255));
         buffer = new byte[SIZE];
-        
-        
         
         try {
             serverSocket = new ServerSocket(8080);
@@ -82,6 +84,9 @@ public class GameViewController implements Runnable{
     
     /**
      * Receives the IP of the other players server
+     * Creates a peer-to-peer connection using a ServerSocket
+     * Creates the JFrame to hold the GameView (the chat JPanel) and the
+     * GameViewBoard (the game board JPanel).
      * @param IP
      * @param username
      */
@@ -111,7 +116,6 @@ public class GameViewController implements Runnable{
         } catch (IOException ex) {
             System.out.println("Could not connect to other player");
         }
-        
         view.displayUserName(username);
     }
     
@@ -139,7 +143,11 @@ public class GameViewController implements Runnable{
         app.setVisible(false);
     }
     
-    @Override
+    /**
+     * Attempts to creates a peer-to-peer connection by creating a serverSocket to
+     * establish and input and output stream between the two players and 
+     * initializes the thread.
+     */
     public void run() {
         boolean connected = false;
         while(!connected){
@@ -155,21 +163,29 @@ public class GameViewController implements Runnable{
             }
             catch(IOException ex){
                 System.out.println("Error in GameViewController run");
-            }
-            
+            }  
         }
-        
     }
     
+    /**
+     * Starts the thread
+     */
     public void starter(){
         t = new Thread(this);
         t.start();
     }
     
+    /**
+     * Appends "OPPONENT:" and their message
+     * @param msg, the message to be sent
+     */
     public void appendGameViewChat(String msg){
         view.appendChat("OPPONENT: " + msg);
     }
     
+    /**
+     * Displays the loss menu when the player loses.
+     */
     public void showLoss(){
         winloss = new WinLossPopupView();
         WLView = new JFrame("End Game");
@@ -180,6 +196,9 @@ public class GameViewController implements Runnable{
         winloss.winLabel.setVisible(false);
     }
     
+    /**
+     * Display the win menu when the player wins.
+     */
     public void showWin(){
         winloss = new WinLossPopupView();
         WLView = new JFrame("End Game");
@@ -190,19 +209,34 @@ public class GameViewController implements Runnable{
         winloss.lossLabel.setVisible(false);
     }
     
+    /**
+     * This message is displayed in the statusTextArea when the user
+     * makes an invalid move.
+     */
     public void invalidMoveMsg(){
         view.appendMoveStatus("Invalid Move Location");
     }
     
+    /**
+     * This message is displayed in the statusTextArea when the user
+     * makes a valid move.
+     */
     public void validMoveMsg(){
         view.appendMoveStatus("Move Location Valid");
     }
     
+    /**
+     * This message is displayed in the statusTextArea when the user
+     * deselects a cell that they previously highlighted.
+     */
     public void moveDeselected(){
         view.appendMoveStatus("Move Deselected");
     }
     
-    // method to clear move status text area
+    /**
+     * Clears the move status area (helps prevent multiple messages
+     * from clogging the statusTextArea
+     */
     public void clearStatus(){
         view.clearMoveStatus();
     }
