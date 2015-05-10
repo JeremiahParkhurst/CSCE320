@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-
 /**
  * The ClientConnection file handles the connection of clients to the server
  */
@@ -25,8 +24,8 @@ public class ClientConnection extends Thread{
      * ClientConnection connects this file to the controller. As well as, it
      * gets the input and output streams and buffer for connecting clients to
      * the server
-     * @param s socket being used
-     * @param c the ServerController
+     * @param s, the socket being used
+     * @param c, the ServerController
      */
     public ClientConnection(Socket s, ServerController c){
         controller = c;
@@ -40,7 +39,6 @@ public class ClientConnection extends Thread{
             e.printStackTrace();
             System.out.println("Error setting up connection");
         }
-        
     }
     
     /**
@@ -56,15 +54,12 @@ public class ClientConnection extends Thread{
                 e.printStackTrace();
                 System.out.println("Could not read in message");
             }
-            
         }
     }
     
-    // return if the user has already been created
     /**
-     * 
-     * @param s
-     * @return
+     * @param s, the username
+     * @return true if the username exists in the user text file, false otherwise
      * @throws IOException 
      */
     public boolean compareUser(String s) throws IOException{
@@ -88,8 +83,8 @@ public class ClientConnection extends Thread{
     }
     
     /**
-     * Checks the textfile to determine whether the username exists
-     * @param s
+     * Checks the text file to determine whether the username exists
+     * @param s, the username
      * @return true if the username exists, false otherwise
      * @throws IOException 
      */
@@ -141,7 +136,7 @@ public class ClientConnection extends Thread{
     }
     
     /**
-     * @return the ip adress
+     * @return the IP address
      */
     public String getIP(){
         return sock.getInetAddress().toString();
@@ -149,14 +144,13 @@ public class ClientConnection extends Thread{
     
     /**
      * Method to create a new user
-     * @param s
+     * @param s, the username
      * @throws IOException 
      */
     public void createUser(String s) throws IOException{
         String profile = s.substring(3, s.length()-1);
         //PrintWriter out = new PrintWriter("users.txt");
-        //out.println(profile);
-        
+        //out.println(profile);    
         try
         {
             String filename = "users.txt";

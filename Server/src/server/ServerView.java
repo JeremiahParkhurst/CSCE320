@@ -148,7 +148,6 @@ public class ServerView extends javax.swing.JPanel {
         controller.stopListening();
     }//GEN-LAST:event_stopButtonMouseClicked
     
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField conNumField;
     private javax.swing.JLabel jLabel1;
