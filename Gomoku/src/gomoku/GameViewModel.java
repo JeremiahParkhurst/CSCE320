@@ -79,6 +79,20 @@ public class GameViewModel {
     }
     
     /**
+     * Helper method that changes all black cells to white cells and is used
+     * in the sendGrid method.
+     * @param blackCell, the black cells to be updated
+     */
+    public void updateBlackCells(GameViewModel blackCell){
+         for (int i=0; i<this.row; i++){
+            for (int j=0; j<this.column; j++){
+                if (blackCell.grid[i][j] == black)
+                    this.grid[i][j] = white;
+            }
+        }
+    }
+    
+    /**
      * Copies an existing GameViewModel
      * @param copy, the GameViewModel to be copied
      */
@@ -141,5 +155,36 @@ public class GameViewModel {
             count++;
         
         return count;
+    }
+    
+    /**
+     * Sends the GameView to the opposing player.
+     * Calls the updateBlackCells method.
+     * @param sent, the GameViewModel to be sent
+     */
+    public void sendGrid(GameViewModel sent){
+        // TODO Auto-generated method stub
+        // Call copy grid or...?
+    }
+    
+    /**
+     * Receives the GameViewModel from the opposing player.
+     * @param reci, the GameViewModel to be receive
+     * @return a GameViewModel that calls mergeGrid to 
+     */
+    public GameViewModel reciGrid(GameViewModel reci){
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    /**
+     * Adds all cells from sentGrid to reciGrid
+     * @param sent, the sent grid
+     * @param reci, the reci grid
+     * @return a GameViewModel that represents both players' grids
+     */
+    public GameViewModel mergeGrid(GameViewModel sent, GameViewModel reci){
+        // TODO Auto-generated method stub
+        return null;
     }
 }
