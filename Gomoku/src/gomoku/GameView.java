@@ -189,6 +189,7 @@ public class GameView extends javax.swing.JPanel {
      */
     private void sendMoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMoveButtonActionPerformed
         //TODO
+        //if user clicks send move --> append msg "you still have a move to make"
         //successful move changes yellow cells --> black cells
         // take cell number (row and column)
         // check to see if there is a win condition

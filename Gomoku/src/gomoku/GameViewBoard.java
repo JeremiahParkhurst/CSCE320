@@ -18,6 +18,7 @@ import javax.swing.JTextArea;
 public class GameViewBoard extends JPanel{
     private int row, col;
     private MyJButton[][] square;
+    private GameViewModel current;
     private GameViewController gcon;
     private int boardSize = 20;
     private Color boardColor = new Color(204,204,255);
@@ -51,19 +52,60 @@ public class GameViewBoard extends JPanel{
     }
     
     /**
-     * Changes cell color indicating the cell has a gomoku piece
-     * @param i
-     * @param j
+     * Constructor, initializes the GameViewBoard
+     * @param cur, the GameViewModel
+     * @param con, the GameViewController
+     */
+    public GameViewBoard(GameViewModel cur, GameViewController con){
+        current = cur;
+        gcon = con;
+        row = boardSize;
+        col = boardSize;
+        
+        //Sets up grid
+        this.setLayout(new GridLayout(row,col));
+        square = new MyJButton[row][col];
+        SquareListener listener = new SquareListener();
+        for(int i =0; i<row; i++) {
+            for (int j=0; j<col; j++){
+                square[i][j]= new MyJButton();
+                square[i][j].i=i;
+                square[i][j].j=j;
+                square[i][j].setSize(boardSize,boardSize);
+                square[i][j].setBackground(boardColor);
+                square[i][j].addActionListener(listener);
+                this.add(square[i][j]);
+            }
+        }
+    }
+    
+    /**
+     * Changes cell color indicating the cell has a Gomoku piece.
+     * All yellow cells will change to a black cell.
+     * @param i, the row
+     * @param j, the column
      */
     private void updateCell(int i, int j){
-        // TODO add your handling code here:
+        if(current.getCell(i,j)== GameViewModel.boardColor)
+            square[i][j].setBackground(boardColor);
+        if(current.getCell(i,j)== GameViewModel.yellow)
+            square[i][j].setBackground(Color.BLACK);
+        if(current.getCell(i,j)== GameViewModel.white)
+            square[i][j].setBackground(Color.WHITE);
+        if(current.getCell(i,j)== GameViewModel.black)
+            square[i][j].setBackground(Color.BLACK);
     }
     
     /**
      * Updates the board, sends the grid to opponent, vice versa
      */
     public void updateGrid() {
-        // TODO add your handling code here:
+         for(int i =0; i<row; i++)
+            for (int j=0; j<col; j++){
+                updateCell(i,j);
+            }
+        count=0;
+        //if win condition, call showLoss/showWin
     }
     
     /**

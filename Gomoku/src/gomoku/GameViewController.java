@@ -40,7 +40,6 @@ public class GameViewController implements Runnable{
      * @param difficulty, the difficulty of the AI
      */
     public GameViewController(DifficultyViewController vc, int difficulty){
-        
         view = new GameView(this);
         view2 = new GameViewBoard(this);
         app = new JFrame("Gomoku");
