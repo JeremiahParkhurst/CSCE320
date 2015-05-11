@@ -1,8 +1,12 @@
 package gomoku;
 
 /**
- *
- * @author John
+ * The GameViewModel has a 2-dimensional primitive array which is a
+ * representation of the GameViewBoard. Each cell has a number which represents
+ * the cell's color. For example, the boardColor is an open space on the board,
+ * the black cells are your Gomoku pieces, and the white pieces belong to the
+ * opposing player. This class also sends, receives, and merges grids between
+ * two players.
  */
 public class GameViewModel {
     protected int row; // number of rows
@@ -84,7 +88,7 @@ public class GameViewModel {
      * @param blackCell, the black cells to be updated
      */
     public void updateBlackCells(GameViewModel blackCell){
-         for (int i=0; i<this.row; i++){
+        for (int i=0; i<this.row; i++){
             for (int j=0; j<this.column; j++){
                 if (blackCell.grid[i][j] == black)
                     this.grid[i][j] = white;
@@ -164,13 +168,14 @@ public class GameViewModel {
      */
     public void sendGrid(GameViewModel sent){
         // TODO Auto-generated method stub
-        // Call copy grid or...?
+// What happens to the white cells currently on this board? --> change opponent cells to a different color?
+// Call copy grid or...?
     }
     
     /**
      * Receives the GameViewModel from the opposing player.
      * @param reci, the GameViewModel to be receive
-     * @return a GameViewModel that calls mergeGrid to 
+     * @return a GameViewModel that calls mergeGrid to
      */
     public GameViewModel reciGrid(GameViewModel reci){
         // TODO Auto-generated method stub
