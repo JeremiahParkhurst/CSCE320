@@ -109,6 +109,15 @@ public class GameViewBoard extends JPanel{
     }
     
     /**
+     * Updates the location of a given cell to white
+     * @param i, the row
+     * @param j, the column
+     */
+    public void updateMyGrid(int i, int j){
+        square[i][j].setBackground(Color.WHITE);
+    }
+    
+    /**
      * The actionPerformed method is called each time a button
      * on the GameViewBoard selected. It allows the user to select 
      * MAX_COUNT greater or equal to 1 boardColor cells to send to 
@@ -146,18 +155,6 @@ public class GameViewBoard extends JPanel{
                 gcon.validMoveMsg();
                 count++; //reset count on your next turn
             }
-        }
-    }
-    
-    /**
-     * The actionPerformed method is called each time the sendMove
-     * button is selected. The user must have select MAX_COUNT = 1
-     * in order to send the move. (MAX_COUNT indicates the number of moves
-     * they have made this turn.
-     */
-    private class ButtonListener implements ActionListener{
-        public void actionPerformed(ActionEvent e) {
-            // TODO add your handling code here:
         }
     }
     

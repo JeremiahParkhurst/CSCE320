@@ -17,7 +17,7 @@ import javax.swing.JTextArea;
  * that they have typed in the textField, which will be displayed to the the
  * textArea by calling the actionlistener methods in this class which calls
  * the methods in the GameController.
- * This class also has the view of the chat components and some of the 
+ * This class also has the view of the chat components and some of the
  * GameBoardView components, such as a text area to display whether a valid move
  * has been made.
  * This view has the send message button and the game board which displays
@@ -188,13 +188,7 @@ public class GameView extends javax.swing.JPanel {
      * @param evt
      */
     private void sendMoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMoveButtonActionPerformed
-        //TODO
-        //if user clicks send move --> append msg "you still have a move to make"
-        //successful move changes yellow cells --> black cells
-        // take cell number (row and column)
-        // check to see if there is a win condition
-        // if yes, sendMsg that starts with 'W' which will end the game
-        // if no, sendMsg that starts with 'T' and continue to next turn
+        vcon.sendMoveButtonChosen();
     }//GEN-LAST:event_sendMoveButtonActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -203,7 +197,7 @@ public class GameView extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JButton sendMoveButton;
+    public javax.swing.JButton sendMoveButton;
     private javax.swing.JTextArea statusTextArea;
     private javax.swing.JLabel stuatsLabel;
     private javax.swing.JTextArea turnCountTextArea;

@@ -1,5 +1,6 @@
 package gomoku;
 
+import gomoku.GameViewModel.Cell;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.*;
@@ -13,12 +14,13 @@ import javax.swing.JFrame;
  * from the GameView. Such as chat messages between players, and messages
  * regarding their selected moves.
  * Creates a peer-to-peer connection between two players.
- * 
+ *
  * NOTE: NOT FULLY IMPLEMENTED
  */
 public class GameViewController implements Runnable{
     private GameView view;
     private GameViewBoard view2;
+    private GameViewModel gmod;
     private WinLossPopupView winloss;
     private DifficultyViewController vcon;
     private JFrame app;
@@ -144,7 +146,7 @@ public class GameViewController implements Runnable{
     
     /**
      * Attempts to creates a peer-to-peer connection by creating a serverSocket to
-     * establish and input and output stream between the two players and 
+     * establish and input and output stream between the two players and
      * initializes the thread.
      */
     public void run() {
@@ -162,7 +164,7 @@ public class GameViewController implements Runnable{
             }
             catch(IOException ex){
                 System.out.println("Error in GameViewController run");
-            }  
+            }
         }
     }
     
@@ -241,31 +243,63 @@ public class GameViewController implements Runnable{
     }
     
     /**
-     * Checks the board for a winner
-     * @return The players number if there is a winner or -1 for no winner
+     * This method is called from the GameView when sendMove is selected.
+     * Checks the board for a yellow cell by the findYellowCell and notifies
+     * the player if they can still make a move, otherwise call
+     * updateYellowCells which will change all yellow cells to black cells
      */
-    public int gameOver(int[][] board){
-        for(int color = 1; color <= 2; color++){
-            for(int i = 0; i < SIZE; i++){
-                for(int j = 0; j < SIZE; j++){
-                    if(toTheEast(color,i,j,0,board) == 5){
-                        return color;
-                    }
-                    else if(toTheSouthEast(color,i,j,0,board) == 5){
-                        return color;
-                    }
-                    else if(toTheSouth(color,i,j,0,board) == 5){
-                        return color;
-                    }
-                    else if(toTheSouthWest(color,i,j,0,board) == 5){
-                        return color;
-                    }
-                }
+    
+    public void sendMoveButtonChosen(){
+        //TODO
+        Cell temp = null;
+        if(gmod.findYellowCell(gmod) == null){
+            view.appendMoveStatus("Move Availible");
+        }
+        else{
+            temp = gmod.findYellowCell(gmod);
+            gmod.updateYellowCells(gmod);
+            if(gameOver(gmod.grid) == false){
+                view2.setEnabled(false);
+                view.sendMoveButton.setEnabled(false);
+                p2.sendMsg("T, " + temp);
+            }
+            else{
+                showWin();
+                p2.sendMsg("W, " + temp);
             }
         }
         
-        return -1;
-        
+        //if user clicks send move --> append msg "you still have a move to make"
+        //successful move changes yellow cells --> black cells
+        // take cell number (row and column)
+        // check to see if there is a win condition
+        // if yes, sendMsg that starts with 'W' which will end the game
+        // if no, sendMsg that starts with 'T' and continue to next turn
+    }
+    
+    /**
+     * Checks the board for a winner
+     * @return The players number if there is a winner or -1 for no winner
+     */
+    public boolean gameOver(int[][] board){
+        int color = 2;
+        for(int i = 0; i < SIZE; i++){
+            for(int j = 0; j < SIZE; j++){
+                if(toTheEast(color,i,j,0,board) == 5){
+                    return true;
+                }
+                else if(toTheSouthEast(color,i,j,0,board) == 5){
+                    return true;
+                }
+                else if(toTheSouth(color,i,j,0,board) == 5){
+                    return true;
+                }
+                else if(toTheSouthWest(color,i,j,0,board) == 5){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     private int toTheEast(int colorInQuestion, int row, int col, int count, int[][] boardModel){
@@ -276,7 +310,7 @@ public class GameViewController implements Runnable{
             return count;
         }
         else if(boardModel[row][col] != colorInQuestion){
-           return count;
+            return count;
         }
         else{
             count++;
@@ -292,7 +326,7 @@ public class GameViewController implements Runnable{
             return count;
         }
         else if(boardModel[row][col] != colorInQuestion){
-           return count;
+            return count;
         }
         else{
             count++;
@@ -308,7 +342,7 @@ public class GameViewController implements Runnable{
             return count;
         }
         else if(boardModel[row][col] != colorInQuestion){
-           return count;
+            return count;
         }
         else{
             count++;
@@ -324,7 +358,7 @@ public class GameViewController implements Runnable{
             return count;
         }
         else if(boardModel[row][col] != colorInQuestion){
-           return count;
+            return count;
         }
         else{
             count++;
