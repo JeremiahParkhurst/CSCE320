@@ -162,34 +162,34 @@ public class GameViewModel {
     }
     
     /**
-     * Sends the GameView to the opposing player.
+     * Sends the Cell to the opposing player.
      * Calls the updateBlackCells method.
-     * @param sent, the GameViewModel to be sent
+     * @param sent, the Cell to be sent
      */
-    public void sendGrid(GameViewModel sent){
-        // TODO Auto-generated method stub
-// What happens to the white cells currently on this board? --> change opponent cells to a different color?
-// Call copy grid or...?
-    }
-    
-    /**
-     * Receives the GameViewModel from the opposing player.
-     * @param reci, the GameViewModel to be receive
-     * @return a GameViewModel that calls mergeGrid to
-     */
-    public GameViewModel reciGrid(GameViewModel reci){
+    public Cell sendCell(Cell sent){
         // TODO Auto-generated method stub
         return null;
     }
     
     /**
-     * Adds all cells from sentGrid to reciGrid
-     * @param sent, the sent grid
-     * @param reci, the reci grid
-     * @return a GameViewModel that represents both players' grids
+     * Receives the Cell from the opposing player.
+     * @param reci, the Cell to be receive
      */
-    public GameViewModel mergeGrid(GameViewModel sent, GameViewModel reci){
+    public Cell reciCell(Cell reci){
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    /**
+     * 
+     */
+    private static class Cell {
+        private int row;
+        private int col;
+        
+        public Cell(int r, int c){
+            row = r;
+            col = c;
+        }
     }
 }
