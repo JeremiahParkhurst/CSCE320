@@ -246,7 +246,8 @@ public class GameViewController implements Runnable{
      * This method is called from the GameView when sendMove is selected.
      * Checks the board for a yellow cell by the findYellowCell and notifies
      * the player if they can still make a move, otherwise call
-     * updateYellowCells which will change all yellow cells to black cells
+     * updateYellowCells which will change all yellow cells to black cells.
+     * Retrieves the location of the yellow cell which will be used to 
      */
     
     public void sendMoveButtonChosen(){
