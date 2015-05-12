@@ -74,6 +74,7 @@ public class GameViewController implements Runnable{
         try {
             serverSocket = new ServerSocket(8080);
             System.out.println("Server Socket open");
+            disableTurn();
         } catch (IOException ex) {
             ex.printStackTrace();
             System.out.println("Could not create port.");
@@ -113,6 +114,7 @@ public class GameViewController implements Runnable{
             in = socket.getInputStream();
             out = socket.getOutputStream();
             p2.starter();
+            enableTurn();
             
         } catch (IOException ex) {
             System.out.println("Could not connect to other player");
@@ -247,7 +249,11 @@ public class GameViewController implements Runnable{
      * Checks the board for a yellow cell by the findYellowCell and notifies
      * the player if they can still make a move, otherwise call
      * updateYellowCells which will change all yellow cells to black cells.
-     * Retrieves the location of the yellow cell which will be used to 
+     * Retrieves the location of the yellow cell which will be used to update
+     * the opposing player's board. sendMsg will disable your board, and when
+     * you receive a msg from sendMsg, it will enable your board.
+     * This method will also check from the win condition via the gameOver
+     * method.
      */
     
     public void sendMoveButtonChosen(){
@@ -260,8 +266,7 @@ public class GameViewController implements Runnable{
             temp = gmod.findYellowCell(gmod);
             gmod.updateYellowCells(gmod);
             if(gameOver(gmod.grid) == false){
-                view2.setEnabled(false);
-                view.sendMoveButton.setEnabled(false);
+                disableTurn();
                 p2.sendMsg("T, " + temp);
             }
             else{
@@ -303,6 +308,32 @@ public class GameViewController implements Runnable{
         return false;
     }
     
+    /**
+     * Enables the game board and sendMove button.
+     */
+    private void enableTurn(){
+         view2.setEnabled(true);
+         view.sendMoveButton.setEnabled(true);
+         view2.count = 0;
+    }
+    
+    /**
+     * Disable the game board and sendMove button.
+     */
+    private void disableTurn(){
+        view2.setEnabled(false);
+        view.sendMoveButton.setEnabled(false);
+    }
+    
+    /**
+     * Recursive method that will search search for cells to the east.
+     * @param colorInQuestion, color this method is searching for
+     * @param row, the row
+     * @param col, the col
+     * @param count, the number of pieces
+     * @param boardModel, the cell location
+     * @return the number of consecutive occurrences of the colorInQuestion
+     */
     private int toTheEast(int colorInQuestion, int row, int col, int count, int[][] boardModel){
         if(count == 5){
             return count;
@@ -319,6 +350,15 @@ public class GameViewController implements Runnable{
         }
     }
     
+    /**
+     * Recursive method that will search search for cells to the south-east.
+     * @param colorInQuestion, color this method is searching for
+     * @param row, the row
+     * @param col, the col
+     * @param count, the number of pieces
+     * @param boardModel, the cell location
+     * @return the number of consecutive occurrences of the colorInQuestion
+     */
     private int toTheSouthEast(int colorInQuestion, int row, int col, int count, int[][] boardModel){
         if(count == 5){
             return count;
@@ -335,6 +375,15 @@ public class GameViewController implements Runnable{
         }
     }
     
+    /**
+     * Recursive method that will search search for cells to the south.
+     * @param colorInQuestion, color this method is searching for
+     * @param row, the row
+     * @param col, the col
+     * @param count, the number of pieces
+     * @param boardModel, the cell location
+     * @return the number of consecutive occurrences of the colorInQuestion
+     */
     private int toTheSouth(int colorInQuestion, int row, int col, int count, int[][] boardModel){
         if(count == 5){
             return count;
@@ -351,6 +400,15 @@ public class GameViewController implements Runnable{
         }
     }
     
+    /**
+     * Recursive method that will search search for cells to the south-west.
+     * @param colorInQuestion, color this method is searching for
+     * @param row, the row
+     * @param col, the col
+     * @param count, the number of pieces
+     * @param boardModel, the cell location
+     * @return the number of consecutive occurrences of the colorInQuestion
+     */
     private int toTheSouthWest(int colorInQuestion, int row, int col, int count, int[][] boardModel){
         if(count == 5){
             return count;
