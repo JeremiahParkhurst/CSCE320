@@ -11,15 +11,15 @@ package gomoku;
  * @author PLUCSCE
  */
 public class WinLossPopupView extends javax.swing.JPanel {
-
+    GameViewController gvc;
+    SignInViewController svc;
+    
     /**
      * Creates new form WinLossPopupView
      */
     public WinLossPopupView() {
         initComponents();
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,17 +34,16 @@ public class WinLossPopupView extends javax.swing.JPanel {
         winLabel = new javax.swing.JLabel();
         mmButton = new javax.swing.JButton();
 
-        setLayout(null);
+        setBackground(new java.awt.Color(204, 204, 255));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lossLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lossLabel.setText("You Lose...");
-        add(lossLabel);
-        lossLabel.setBounds(20, 0, 143, 29);
+        add(lossLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 37, 143, -1));
 
         winLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         winLabel.setText("You Win!!!!");
-        add(winLabel);
-        winLabel.setBounds(20, 0, 120, 29);
+        add(winLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 77, -1, -1));
 
         mmButton.setText("Return to Matchmaking");
         mmButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -52,12 +51,13 @@ public class WinLossPopupView extends javax.swing.JPanel {
                 mmButtonMouseClicked(evt);
             }
         });
-        add(mmButton);
-        mmButton.setBounds(10, 40, 143, 23);
+        add(mmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 124, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void mmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mmButtonMouseClicked
-        
+        //svc = new SignInViewController();
+        svc.SendLoginRequest(svc.globalUser, svc.globalPassword); // go back to matchmaking
+        gvc.hideView(); // hides game view and popup view
     }//GEN-LAST:event_mmButtonMouseClicked
 
 

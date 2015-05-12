@@ -42,8 +42,6 @@ public class GameViewBoard extends JPanel{
         for(int i =0; i<row; i++) {
             for (int j=0; j<col; j++){
                 square[i][j]= new MyJButton(i,j);
-                //square[i][j].i=i;
-                //square[i][j].j=j;
                 square[i][j].setSize(boardSize,boardSize);
                 square[i][j].setBackground(boardColor);
                 square[i][j].addActionListener(listener);
@@ -127,7 +125,7 @@ public class GameViewBoard extends JPanel{
             else if(MAX_COUNT != count){
                 button.setBackground(Color.YELLOW);
                 gcon.validMoveMsg();
-                count++; //reset count on your next turn
+                count++; 
             }
         }
     }

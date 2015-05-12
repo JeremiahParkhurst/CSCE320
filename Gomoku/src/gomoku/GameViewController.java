@@ -149,6 +149,7 @@ public class GameViewController implements Runnable{
      */
     public void hideView() {
         app.setVisible(false);
+        WLView.setVisible(false);
     }
     
     /**
@@ -263,29 +264,24 @@ public class GameViewController implements Runnable{
             view.appendMoveStatus("Move Availible");
         }
         else{
+            String stringT = "T, " + yellowCell.toString(); // formats turn msg
+            String stringW = "W, " + yellowCell.toString(); // formats win msg
+            // following 6 lines format r and c to be integers for calling updateYellowSquare
+            String profile = stringT.substring(4, stringT.length()-1);
+            Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
+            String row = scan.next();
+            String column = scan.next();
+            int r = Integer.parseInt(row);
+            int c = Integer.parseInt(column);
+            view2.updateYellowSquare(r,c);
+            
             if(gameOver(view2.square) == false){
                 disableTurn();
-                String stringT = "T, " + yellowCell.toString();
-                p2.sendMsg(stringT);
-                String profile = stringT.substring(4, stringT.length()-1);
-                Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
-                String row = scan.next();
-                String column = scan.next();
-                int r = Integer.parseInt(row);
-                int c = Integer.parseInt(column);
-                view2.updateYellowSquare(r,c);
+                p2.sendMsg(stringT); 
             }
             else{
                 showWin();
-                String stringW = "W, " + yellowCell.toString();
                 p2.sendMsg(stringW);
-                String profile = stringW.substring(4, stringW.length()-1);
-                Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
-                String row = scan.next();
-                String column = scan.next();
-                int r = Integer.parseInt(row);
-                int c = Integer.parseInt(column);
-                view2.updateYellowSquare(r,c);
             }
         }
     }
@@ -322,6 +318,7 @@ public class GameViewController implements Runnable{
          view2.setEnabled(true);
          view.sendMoveButton.setEnabled(true);
          view2.count = 0;
+         view.turnTextArea.setText("Your");
     }
     
     /**
@@ -330,6 +327,7 @@ public class GameViewController implements Runnable{
     public void disableTurn(){
         view2.setEnabled(false);
         view.sendMoveButton.setEnabled(false);
+        view.turnTextArea.setText("Opponent");
     }
     
     /**
@@ -348,10 +346,10 @@ public class GameViewController implements Runnable{
         else if(row >= view2.boardSize || col >= view2.boardSize){
             return count;
         }
-        else if(!boardModel[row][col].getColor().equals(Color.BLACK)){
+        else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
             return count;
         }
-        else if(boardModel[row][col].getColor().equals(Color.BLACK)){
+        else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
             count++;
             return toTheEast(colorInQuestion,row,col+1,count,boardModel);
         }
@@ -376,10 +374,10 @@ public class GameViewController implements Runnable{
         else if(row >= view2.boardSize || col >= view2.boardSize){
             return count;
         }
-        else if(!boardModel[row][col].getColor().equals(Color.BLACK)){
+        else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
             return count;
         }
-        else if(boardModel[row][col].getColor().equals(Color.BLACK)){
+        else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
             count++;
             return toTheSouthEast(colorInQuestion,row +1,col+1,count,boardModel);
         }
@@ -404,10 +402,10 @@ public class GameViewController implements Runnable{
         else if(row >= view2.boardSize || col >= view2.boardSize){
             return count;
         }
-        else if(!boardModel[row][col].getColor().equals(Color.BLACK)){
+        else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
             return count;
         }
-        else if(boardModel[row][col].getColor().equals(Color.BLACK)){
+        else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
             count++;
             return toTheSouth(colorInQuestion,row+1,col,count,boardModel);
         }
@@ -432,10 +430,10 @@ public class GameViewController implements Runnable{
         else if(col == -1 || row >= view2.boardSize || col >= view2.boardSize){
             return count;
         }
-        else if(!boardModel[row][col].getColor().equals(Color.BLACK)){
+        else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
             return count;
         }
-        else if(boardModel[row][col].getColor().equals(Color.BLACK)){
+        else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
             count++;
             return toTheSouthWest(colorInQuestion,row+1,col-1,count,boardModel);
         }

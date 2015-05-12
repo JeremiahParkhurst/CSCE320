@@ -63,9 +63,6 @@ public class NetworkedPlayer implements Runnable{
      * @param msg
      */
     public void sendMsg(String msg){
-        if(msg.charAt(0) == 'W'){
-            gvc.showWin();
-        }
         byte[] b = msg.getBytes();
         try{
             out.write(b);
@@ -89,21 +86,35 @@ public class NetworkedPlayer implements Runnable{
                         gvc.appendGameViewChat(profile);
                     }
                     if(msg.charAt(0) == 'T'){ // T, row, column \n
+                        // Following 6 lines used to get r and c into integers for the updateGrid call
                         String profile = msg.substring(4, msg.length()-1);
                         Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
                         row = scan.next();
                         column = scan.next();
                         int r = Integer.parseInt(row);
                         int c = Integer.parseInt(column);
+                        
                         gvc.updateGrid(r, c);
                         gvc.enableTurn();
                     }
                     if(msg.charAt(0) == 'W'){ // W, row, column \n
+                        // Following 6 lines used to get r and c into integers for the updateGrid call
+                        String profile = msg.substring(4, msg.length()-1);
+                        Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
+                        row = scan.next();
+                        column = scan.next();
+                        int r = Integer.parseInt(row);
+                        int c = Integer.parseInt(column);
+                        System.out.println("Win Condition Acheived");
+                        
+                        gvc.updateGrid(r, c);
                         gvc.showLoss();
+                        
                     }
                 }
             } catch (IOException ex) {
                 System.out.println("Couldn't read msg.");
+                System.out.println("Other user Disconnected \nExit to Matchmaking");
             }
         }
     }

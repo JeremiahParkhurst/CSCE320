@@ -28,9 +28,9 @@
                   <Group type="102" attributes="0">
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="turnCountTextLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" min="-2" pref="40" max="-2" attributes="0"/>
+                      <Component id="turnTextLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="93" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="chatLabel" min="-2" pref="211" max="-2" attributes="0"/>
@@ -56,7 +56,7 @@
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                      <Component id="turnCountTextLabel" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      <Component id="turnTextLabel" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane2" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -125,10 +125,13 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="turnCountTextLabel">
+    <Component class="javax.swing.JLabel" name="turnTextLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Turn Count:"/>
+        <Property name="text" type="java.lang.String" value="Turn:"/>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="turnText"/>
+      </AccessibilityProperties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <AuxValues>
@@ -137,7 +140,10 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="turnCountTextArea">
+        <Component class="javax.swing.JTextArea" name="turnTextArea">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

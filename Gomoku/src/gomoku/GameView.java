@@ -33,6 +33,7 @@ public class GameView extends javax.swing.JPanel {
     public GameView(GameViewController con) {
         initComponents();
         vcon = con;
+        txtLog.append("Your Game Piece Color is Black" + "\n");
     }
     
     /**
@@ -75,9 +76,9 @@ public class GameView extends javax.swing.JPanel {
         chatLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         sendMoveButton = new javax.swing.JButton();
-        turnCountTextLabel = new javax.swing.JLabel();
+        turnTextLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        turnCountTextArea = new javax.swing.JTextArea();
+        turnTextArea = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         statusTextArea = new javax.swing.JTextArea();
         stuatsLabel = new javax.swing.JLabel();
@@ -105,9 +106,9 @@ public class GameView extends javax.swing.JPanel {
             }
         });
 
-        turnCountTextLabel.setText("Turn Count:");
+        turnTextLabel.setText("Turn:");
 
-        jScrollPane2.setViewportView(turnCountTextArea);
+        jScrollPane2.setViewportView(turnTextArea);
 
         jScrollPane3.setViewportView(statusTextArea);
 
@@ -124,9 +125,9 @@ public class GameView extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(turnCountTextLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(turnTextLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(chatLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -145,7 +146,7 @@ public class GameView extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(turnCountTextLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(turnTextLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -163,6 +164,8 @@ public class GameView extends javax.swing.JPanel {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
+
+        turnTextLabel.getAccessibleContext().setAccessibleName("turnText");
     }// </editor-fold>//GEN-END:initComponents
     
     /**
@@ -194,8 +197,8 @@ public class GameView extends javax.swing.JPanel {
     public javax.swing.JButton sendMoveButton;
     private javax.swing.JTextArea statusTextArea;
     private javax.swing.JLabel stuatsLabel;
-    private javax.swing.JTextArea turnCountTextArea;
-    private javax.swing.JLabel turnCountTextLabel;
+    public javax.swing.JTextArea turnTextArea;
+    private javax.swing.JLabel turnTextLabel;
     private javax.swing.JTextArea txtLog;
     private javax.swing.JTextField txtToSend;
     // End of variables declaration//GEN-END:variables

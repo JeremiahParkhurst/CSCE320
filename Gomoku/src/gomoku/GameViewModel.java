@@ -1,7 +1,6 @@
 package gomoku;
 
 import gomoku.GameViewBoard.MyJButton;
-import javafx.scene.paint.Color;
 import javax.swing.JButton;
 
 /**

@@ -30,8 +30,10 @@ class SignInViewController implements Runnable{
     MatchmakingViewController mvcon;
     
     ArrayList<String> onlineUsers;
-    
     String USERNAME = "";
+    // username and password accessed by WinLossPopupView for returning to matchmaking
+    String globalUser; 
+    String globalPassword;
     
     /**
      * Constructor initializes the SignInViewController
@@ -101,7 +103,9 @@ class SignInViewController implements Runnable{
      * @param user, the username of the user
      * @param pass, the password of the user
      */
-    private void SendLoginRequest(String username, String password){
+    public void SendLoginRequest(String username, String password){
+        globalUser = username; // sets user to class variable for later access
+        globalUser = password; // sets password to class variable for later access
         String msg = "L, " + username + ", " + password + "\n";
         USERNAME = username;
         sendMsg(msg);
@@ -192,10 +196,6 @@ class SignInViewController implements Runnable{
                     view.setLabError(true);
                 }
             }
-            /*else{
-            connect = false;
-            view.postMsg("\n" + "CONNECTION HAS BEEN LOST!");
-            }*/
         }
     }
     
