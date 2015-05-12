@@ -23,7 +23,7 @@ public class GameViewBoard extends JPanel{
     private int boardSize = 20;
     private Color boardColor = new Color(204,204,255);
     private final int MAX_COUNT = 1; //maximum number of moves
-    private int count = 0; //current number of moves
+    public int count = 0; //current number of moves
     
     /**
      * Constructor, initializes the GameViewBoard
