@@ -16,6 +16,7 @@ public class GameViewModel {
     public static final int yellow = 1; // tentative move piece
     public static final int black = 2; // your board piece
     public static final int white = 3;  // opponent board piece
+    GameViewController gcon;
     
     /**
      * Constructor
@@ -162,31 +163,34 @@ public class GameViewModel {
     }
     
     /**
-     * Sends the Cell to the opposing player.
-     * Calls the updateBlackCells method.
-     * @param sent, the Cell to be sent
+     * Locates and returns the position of the yellow cell
+     * @param yellowCell, the yellow cell to be located
+     * @return cell, the coordinates of the yellow cell
      */
-    public Cell sendCell(Cell sent){
-        // TODO Auto-generated method stub
+    public Cell findYellowCell(GameViewModel yellowCell){
+       Cell cell = null;
+        for (int i=0; i<this.row; i++){
+            for (int j=0; j<this.column; j++){
+                if (yellowCell.grid[i][j] == yellow)
+                    cell = new Cell(i,j);
+                    return cell;
+            }
+        }
         return null;
     }
     
     /**
-     * Receives the Cell from the opposing player.
-     * @param reci, the Cell to be receive
+     * Helper method that has the coordinates of a cell
      */
-    public Cell reciCell(Cell reci){
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
-    /**
-     * 
-     */
-    private static class Cell {
+    public static class Cell {
         private int row;
         private int col;
         
+        /**
+         * The position of the cell
+         * @param r, the rows
+         * @param c, the columns
+         */
         public Cell(int r, int c){
             row = r;
             col = c;
