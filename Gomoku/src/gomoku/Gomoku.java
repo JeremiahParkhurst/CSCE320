@@ -13,7 +13,7 @@ public class Gomoku {
             ip = args[0];
         }
         else{
-            ip = "152.117.180.235";
+            ip = "152.117.243.155";
         }
         TitleViewController vc = new TitleViewController(ip);
         vc.showView();

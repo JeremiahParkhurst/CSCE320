@@ -18,6 +18,7 @@ public class NetworkedPlayer implements Runnable{
     private final int SIZE = 1024;
     private byte[] buffer;
     GameViewController gvc;
+    GameViewBoard gb;
     String row;
     String column;
     
@@ -87,11 +88,14 @@ public class NetworkedPlayer implements Runnable{
                         gvc.appendGameViewChat(profile);
                     }
                     if(msg.charAt(0) == 'T'){ // T, row, column \n
-                        String profile = msg.substring(3, msg.length()-1);
+                        String profile = msg.substring(4, msg.length()-1);
                         Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
                         row = scan.next();
                         column = scan.next();
-                        
+                        int r = Integer.parseInt(row);
+                        int c = Integer.parseInt(column);
+                        gb.updateMyGrid(r, c);
+                        gvc.enableTurn();
                     }
                     if(msg.charAt(0) == 'W'){ // W, row, column \n
                         gvc.showLoss();
