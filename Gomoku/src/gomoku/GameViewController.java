@@ -1,5 +1,6 @@
 package gomoku;
 
+import gomoku.GameViewBoard.MyJButton;
 import gomoku.GameViewModel.Cell;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -7,6 +8,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 import javax.swing.JFrame;
 
 /**
@@ -44,6 +46,7 @@ public class GameViewController implements Runnable{
     public GameViewController(DifficultyViewController vc, int difficulty){
         view = new GameView(this);
         view2 = new GameViewBoard(this);
+        gmod = new GameViewModel(view2.boardSize, view2.boardSize);
         app = new JFrame("Gomoku");
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.add(view, BorderLayout.EAST);
@@ -63,6 +66,7 @@ public class GameViewController implements Runnable{
     public GameViewController(String username){
         view = new GameView(this);
         view2 = new GameViewBoard(this);
+        gmod = new GameViewModel(view2.boardSize, view2.boardSize);
         app = new JFrame(username + "'s Game View");
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.add(view, BorderLayout.EAST);
@@ -95,6 +99,7 @@ public class GameViewController implements Runnable{
     public GameViewController(String IP, String username){
         view = new GameView(this);
         view2 = new GameViewBoard(this);
+        gmod = new GameViewModel(view2.boardSize, view2.boardSize);
         app = new JFrame(username + "'s Game View");
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.add(view, BorderLayout.EAST);
@@ -236,12 +241,8 @@ public class GameViewController implements Runnable{
         view.appendMoveStatus("Move Deselected");
     }
     
-    /**
-     * Clears the move status area (helps prevent multiple messages
-     * from clogging the statusTextArea
-     */
-    public void clearStatus(){
-        view.clearMoveStatus();
+    public void updateGrid(int r, int c){
+        view2.updateMyGrid(r, c);
     }
     
     /**
@@ -257,40 +258,46 @@ public class GameViewController implements Runnable{
      */
     
     public void sendMoveButtonChosen(){
-        //TODO
-        Cell temp = null;
-        if(gmod.findYellowCell(gmod) == null){
+        Cell yellowCell = gmod.findYellowCell(view2.square);
+        if(yellowCell == null){
             view.appendMoveStatus("Move Availible");
         }
         else{
-            temp = gmod.findYellowCell(gmod);
-            gmod.updateYellowCells(gmod);
-            if(gameOver(gmod.grid) == false){
+            if(gameOver(view2.square) == false){
                 disableTurn();
-                p2.sendMsg("T, " + temp);
+                String stringT = "T, " + yellowCell.toString();
+                p2.sendMsg(stringT);
+                String profile = stringT.substring(4, stringT.length()-1);
+                Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
+                String row = scan.next();
+                String column = scan.next();
+                int r = Integer.parseInt(row);
+                int c = Integer.parseInt(column);
+                view2.updateYellowSquare(r,c);
             }
             else{
                 showWin();
-                p2.sendMsg("W, " + temp);
+                String stringW = "W, " + yellowCell.toString();
+                p2.sendMsg(stringW);
+                String profile = stringW.substring(4, stringW.length()-1);
+                Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
+                String row = scan.next();
+                String column = scan.next();
+                int r = Integer.parseInt(row);
+                int c = Integer.parseInt(column);
+                view2.updateYellowSquare(r,c);
             }
         }
-        
-        //if user clicks send move --> append msg "you still have a move to make"
-        //successful move changes yellow cells --> black cells
-        // take cell number (row and column)
-        // check to see if there is a win condition
-        // if yes, sendMsg that starts with 'W' which will end the game
-        // if no, sendMsg that starts with 'T' and continue to next turn
     }
     
     /**
      * Checks the board for a winner
      * @return The players number if there is a winner or -1 for no winner
      */
-    public boolean gameOver(int[][] board){
+    public boolean gameOver(MyJButton[][] board){
         int color = 2;
-        for(int i = 0; i < SIZE; i++){
-            for(int j = 0; j < SIZE; j++){
+        for(int i = 0; i < view2.boardSize; i++){
+            for(int j = 0; j < view2.boardSize; j++){
                 if(toTheEast(color,i,j,0,board) == 5){
                     return true;
                 }
@@ -311,7 +318,7 @@ public class GameViewController implements Runnable{
     /**
      * Enables the game board and sendMove button.
      */
-    private void enableTurn(){
+    public void enableTurn(){
          view2.setEnabled(true);
          view.sendMoveButton.setEnabled(true);
          view2.count = 0;
@@ -320,7 +327,7 @@ public class GameViewController implements Runnable{
     /**
      * Disable the game board and sendMove button.
      */
-    private void disableTurn(){
+    public void disableTurn(){
         view2.setEnabled(false);
         view.sendMoveButton.setEnabled(false);
     }
@@ -334,19 +341,22 @@ public class GameViewController implements Runnable{
      * @param boardModel, the cell location
      * @return the number of consecutive occurrences of the colorInQuestion
      */
-    private int toTheEast(int colorInQuestion, int row, int col, int count, int[][] boardModel){
+    private int toTheEast(int colorInQuestion, int row, int col, int count, MyJButton[][] boardModel){
         if(count == 5){
             return count;
         }
-        else if(col == SIZE){
+        else if(row >= view2.boardSize || col >= view2.boardSize){
             return count;
         }
-        else if(boardModel[row][col] != colorInQuestion){
+        else if(!boardModel[row][col].getColor().equals(Color.BLACK)){
             return count;
         }
-        else{
+        else if(boardModel[row][col].getColor().equals(Color.BLACK)){
             count++;
             return toTheEast(colorInQuestion,row,col+1,count,boardModel);
+        }
+        else{
+            return count;
         }
     }
     
@@ -359,19 +369,22 @@ public class GameViewController implements Runnable{
      * @param boardModel, the cell location
      * @return the number of consecutive occurrences of the colorInQuestion
      */
-    private int toTheSouthEast(int colorInQuestion, int row, int col, int count, int[][] boardModel){
+    private int toTheSouthEast(int colorInQuestion, int row, int col, int count, MyJButton[][] boardModel){
         if(count == 5){
             return count;
         }
-        else if(col == SIZE || row == SIZE){
+        else if(row >= view2.boardSize || col >= view2.boardSize){
             return count;
         }
-        else if(boardModel[row][col] != colorInQuestion){
+        else if(!boardModel[row][col].getColor().equals(Color.BLACK)){
             return count;
+        }
+        else if(boardModel[row][col].getColor().equals(Color.BLACK)){
+            count++;
+            return toTheSouthEast(colorInQuestion,row +1,col+1,count,boardModel);
         }
         else{
-            count++;
-            return toTheEast(colorInQuestion,row +1,col+1,count,boardModel);
+            return count;
         }
     }
     
@@ -384,19 +397,22 @@ public class GameViewController implements Runnable{
      * @param boardModel, the cell location
      * @return the number of consecutive occurrences of the colorInQuestion
      */
-    private int toTheSouth(int colorInQuestion, int row, int col, int count, int[][] boardModel){
+    private int toTheSouth(int colorInQuestion, int row, int col, int count, MyJButton[][] boardModel){
         if(count == 5){
             return count;
         }
-        else if(row == SIZE){
+        else if(row >= view2.boardSize || col >= view2.boardSize){
             return count;
         }
-        else if(boardModel[row][col] != colorInQuestion){
+        else if(!boardModel[row][col].getColor().equals(Color.BLACK)){
             return count;
+        }
+        else if(boardModel[row][col].getColor().equals(Color.BLACK)){
+            count++;
+            return toTheSouth(colorInQuestion,row+1,col,count,boardModel);
         }
         else{
-            count++;
-            return toTheEast(colorInQuestion,row+1,col,count,boardModel);
+            return count;
         }
     }
     
@@ -409,19 +425,22 @@ public class GameViewController implements Runnable{
      * @param boardModel, the cell location
      * @return the number of consecutive occurrences of the colorInQuestion
      */
-    private int toTheSouthWest(int colorInQuestion, int row, int col, int count, int[][] boardModel){
+    private int toTheSouthWest(int colorInQuestion, int row, int col, int count, MyJButton[][] boardModel){
         if(count == 5){
             return count;
         }
-        else if(col == -1 || row == SIZE){
+        else if(col == -1 || row >= view2.boardSize || col >= view2.boardSize){
             return count;
         }
-        else if(boardModel[row][col] != colorInQuestion){
+        else if(!boardModel[row][col].getColor().equals(Color.BLACK)){
             return count;
+        }
+        else if(boardModel[row][col].getColor().equals(Color.BLACK)){
+            count++;
+            return toTheSouthWest(colorInQuestion,row+1,col-1,count,boardModel);
         }
         else{
-            count++;
-            return toTheEast(colorInQuestion,row+1,col-1,count,boardModel);
+            return count;
         }
     }
 }

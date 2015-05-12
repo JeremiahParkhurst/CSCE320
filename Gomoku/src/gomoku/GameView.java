@@ -56,14 +56,8 @@ public class GameView extends javax.swing.JPanel {
      * @param msg, the message to be displayed on the status text area
      */
     public void appendMoveStatus(String msg){
-        statusTextArea.append(msg);
-    }
-    
-    /**
-     * Clears the statusTextArea
-     */
-    public void clearMoveStatus(){
         statusTextArea.setText(null);
+        statusTextArea.append(msg);
     }
     
     /**

@@ -1,5 +1,9 @@
 package gomoku;
 
+import gomoku.GameViewBoard.MyJButton;
+import javafx.scene.paint.Color;
+import javax.swing.JButton;
+
 /**
  * The GameViewModel has a 2-dimensional primitive array which is a
  * representation of the GameViewBoard. Each cell has a number which represents
@@ -68,19 +72,6 @@ public class GameViewModel {
      */
     public int getColumns() {
         return column;
-    }
-    
-    /**
-     * Updates all yellow cells to black cells.
-     * @param yellowCell, the yellow cells to be updated
-     */
-    public void updateYellowCells(GameViewModel yellowCell){
-        for (int i=0; i<this.row; i++){
-            for (int j=0; j<this.column; j++){
-                if (yellowCell.grid[i][j] == yellow)
-                    this.grid[i][j] = black;
-            }
-        }
     }
     
     /**
@@ -164,16 +155,17 @@ public class GameViewModel {
     
     /**
      * Locates and returns the position of the yellow cell
-     * @param yellowCell, the yellow cell to be located
+     * @param grid, the 2-dim array representation of the grid
      * @return cell, the coordinates of the yellow cell
      */
-    public Cell findYellowCell(GameViewModel yellowCell){
-       Cell cell = null;
+    public Cell findYellowCell(MyJButton[][] grid){
+        Cell cell = null;
         for (int i=0; i<this.row; i++){
             for (int j=0; j<this.column; j++){
-                if (yellowCell.grid[i][j] == yellow)
+                if(grid[i][j].getBackground().equals(java.awt.Color.YELLOW)){
                     cell = new Cell(i,j);
                     return cell;
+                }    
             }
         }
         return null;
@@ -194,6 +186,11 @@ public class GameViewModel {
         public Cell(int r, int c){
             row = r;
             col = c;
+        }
+        
+        public String toString(){
+            String str = "(" + row + ", " + col + ")";
+            return str;
         }
     }
 }

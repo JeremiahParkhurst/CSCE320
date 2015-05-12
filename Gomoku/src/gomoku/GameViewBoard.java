@@ -17,11 +17,11 @@ import javax.swing.JTextArea;
  */
 public class GameViewBoard extends JPanel{
     private int row, col;
-    private MyJButton[][] square;
+    public MyJButton[][] square;
     private GameViewModel current;
     private GameViewController gcon;
-    private int boardSize = 20;
-    private Color boardColor = new Color(204,204,255);
+    public int boardSize = 20;
+    public Color boardColor = new Color(204,204,255);
     private final int MAX_COUNT = 1; //maximum number of moves
     public int count = 0; //current number of moves
     
@@ -33,6 +33,7 @@ public class GameViewBoard extends JPanel{
         gcon = con;
         row = boardSize;
         col = boardSize;
+        current = new GameViewModel(boardSize, boardSize);
         
         //Sets up grid
         this.setLayout(new GridLayout(row,col));
@@ -40,37 +41,9 @@ public class GameViewBoard extends JPanel{
         SquareListener listener = new SquareListener();
         for(int i =0; i<row; i++) {
             for (int j=0; j<col; j++){
-                square[i][j]= new MyJButton();
-                square[i][j].i=i;
-                square[i][j].j=j;
-                square[i][j].setSize(boardSize,boardSize);
-                square[i][j].setBackground(boardColor);
-                square[i][j].addActionListener(listener);
-                this.add(square[i][j]);
-            }
-        }
-    }
-    
-    /**
-     * Constructor, initializes the GameViewBoard
-     * @param cur, the GameViewModel
-     * @param con, the GameViewController
-     */
-    public GameViewBoard(GameViewModel cur, GameViewController con){
-        current = cur;
-        gcon = con;
-        row = boardSize;
-        col = boardSize;
-        
-        //Sets up grid
-        this.setLayout(new GridLayout(row,col));
-        square = new MyJButton[row][col];
-        SquareListener listener = new SquareListener();
-        for(int i =0; i<row; i++) {
-            for (int j=0; j<col; j++){
-                square[i][j]= new MyJButton();
-                square[i][j].i=i;
-                square[i][j].j=j;
+                square[i][j]= new MyJButton(i,j);
+                //square[i][j].i=i;
+                //square[i][j].j=j;
                 square[i][j].setSize(boardSize,boardSize);
                 square[i][j].setBackground(boardColor);
                 square[i][j].addActionListener(listener);
@@ -117,6 +90,10 @@ public class GameViewBoard extends JPanel{
         square[i][j].setBackground(Color.WHITE);
     }
     
+    public void updateYellowSquare(int i, int j){
+        square[i][j].setBackground(Color.BLACK);
+    }
+    
     /**
      * The actionPerformed method is called each time a button
      * on the GameViewBoard selected. It allows the user to select 
@@ -139,19 +116,16 @@ public class GameViewBoard extends JPanel{
             if(button.getBackground().equals(Color.YELLOW)){
                 button.setBackground(boardColor);
                 count = 0;
-                gcon.clearStatus();
                 gcon.moveDeselected();
             }
             
             //if the user makes a move that is not an open space
             else if(button.getBackground().equals(Color.WHITE) || button.getBackground().equals(Color.BLACK)){
-                gcon.clearStatus();
                 gcon.invalidMoveMsg();
             }
             //the move is successful (no cell is not marked by a player)
             else if(MAX_COUNT != count){
                 button.setBackground(Color.YELLOW);
-                gcon.clearStatus();
                 gcon.validMoveMsg();
                 count++; //reset count on your next turn
             }
@@ -162,8 +136,17 @@ public class GameViewBoard extends JPanel{
      * This is a private helper class the extends JButton to include
      * its (i,j) location in the center panel.
      */
-    private static class MyJButton extends JButton{
-        private int i; //the row
-        private int j; //the column
+    public static class MyJButton extends JButton{
+        public int i; //the row
+        public int j; //the column
+        
+        public MyJButton(int row, int column){
+            i = row;
+            j = column;
+        }
+        
+        public String getColor(){
+            return getBackground().toString();
+        }
     }
 }

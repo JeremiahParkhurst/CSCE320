@@ -30,6 +30,7 @@ public class NetworkedPlayer implements Runnable{
         gvc = gameViewCon;
         sock = s;
         buffer = new byte[SIZE];
+        
         try {
             in = sock.getInputStream();
             out = sock.getOutputStream();
@@ -94,7 +95,7 @@ public class NetworkedPlayer implements Runnable{
                         column = scan.next();
                         int r = Integer.parseInt(row);
                         int c = Integer.parseInt(column);
-                        gb.updateMyGrid(r, c);
+                        gvc.updateGrid(r, c);
                         gvc.enableTurn();
                     }
                     if(msg.charAt(0) == 'W'){ // W, row, column \n
