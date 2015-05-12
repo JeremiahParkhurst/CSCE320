@@ -239,4 +239,96 @@ public class GameViewController implements Runnable{
     public void clearStatus(){
         view.clearMoveStatus();
     }
+    
+    /**
+     * Checks the board for a winner
+     * @return The players number if there is a winner or -1 for no winner
+     */
+    public int gameOver(int[][] board){
+        for(int color = 1; color <= 2; color++){
+            for(int i = 0; i < SIZE; i++){
+                for(int j = 0; j < SIZE; j++){
+                    if(toTheEast(color,i,j,0,board) == 5){
+                        return color;
+                    }
+                    else if(toTheSouthEast(color,i,j,0,board) == 5){
+                        return color;
+                    }
+                    else if(toTheSouth(color,i,j,0,board) == 5){
+                        return color;
+                    }
+                    else if(toTheSouthWest(color,i,j,0,board) == 5){
+                        return color;
+                    }
+                }
+            }
+        }
+        
+        return -1;
+        
+    }
+    
+    private int toTheEast(int colorInQuestion, int row, int col, int count, int[][] boardModel){
+        if(count == 5){
+            return count;
+        }
+        else if(col == SIZE){
+            return count;
+        }
+        else if(boardModel[row][col] != colorInQuestion){
+           return count;
+        }
+        else{
+            count++;
+            return toTheEast(colorInQuestion,row,col+1,count,boardModel);
+        }
+    }
+    
+    private int toTheSouthEast(int colorInQuestion, int row, int col, int count, int[][] boardModel){
+        if(count == 5){
+            return count;
+        }
+        else if(col == SIZE || row == SIZE){
+            return count;
+        }
+        else if(boardModel[row][col] != colorInQuestion){
+           return count;
+        }
+        else{
+            count++;
+            return toTheEast(colorInQuestion,row +1,col+1,count,boardModel);
+        }
+    }
+    
+    private int toTheSouth(int colorInQuestion, int row, int col, int count, int[][] boardModel){
+        if(count == 5){
+            return count;
+        }
+        else if(row == SIZE){
+            return count;
+        }
+        else if(boardModel[row][col] != colorInQuestion){
+           return count;
+        }
+        else{
+            count++;
+            return toTheEast(colorInQuestion,row+1,col,count,boardModel);
+        }
+    }
+    
+    private int toTheSouthWest(int colorInQuestion, int row, int col, int count, int[][] boardModel){
+        if(count == 5){
+            return count;
+        }
+        else if(col == -1 || row == SIZE){
+            return count;
+        }
+        else if(boardModel[row][col] != colorInQuestion){
+           return count;
+        }
+        else{
+            count++;
+            return toTheEast(colorInQuestion,row+1,col-1,count,boardModel);
+        }
+    }
 }
