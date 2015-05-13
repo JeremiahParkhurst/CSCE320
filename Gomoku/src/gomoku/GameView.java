@@ -21,7 +21,7 @@ import javax.swing.JTextArea;
  * GameBoardView components, such as a text area to display whether a valid move
  * has been made.
  * This view has the send message button and the game board which displays
- * the Gomoku game.
+ * the Gomoku game, and a Turn indicator textArea that displays whose turn it is
  */
 public class GameView extends javax.swing.JPanel {
     GameViewController vcon;
@@ -29,6 +29,7 @@ public class GameView extends javax.swing.JPanel {
     
     /**
      * Constructor, creates and initializes the GameView
+     * Notifies the player that their Gomoku game piece is black.
      */
     public GameView(GameViewController con) {
         initComponents();
@@ -182,7 +183,9 @@ public class GameView extends javax.swing.JPanel {
     }//GEN-LAST:event_txtToSendActionPerformed
     
     /**
-     * @param evt
+     * This method is called when the uses selects the Send Move button.
+     * @param evt, calls the SendMoveButtonChosen method within the
+     * GameViewController.
      */
     private void sendMoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMoveButtonActionPerformed
         vcon.sendMoveButtonChosen();
@@ -202,5 +205,4 @@ public class GameView extends javax.swing.JPanel {
     private javax.swing.JTextArea txtLog;
     private javax.swing.JTextField txtToSend;
     // End of variables declaration//GEN-END:variables
-    
 }

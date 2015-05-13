@@ -2,7 +2,7 @@ package gomoku;
 
 /**
  * The ConnectingView displays the status of the connection between
- * the client and the server through a textArea.
+ * the client and the server through the textArea.
  */
 public class ConnectingView extends javax.swing.JPanel {
     ConnectingViewController vcon;

@@ -1,21 +1,25 @@
 package gomoku;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author PLUCSCE
+ * This class displays the post-game view that displays "You Win!!!" if the
+ * player has not receive a message from the gameOver method within the 
+ * GameViewController, else the player will have a WinLossPopupView that 
+ * displays "You Lose..."
+ * This class also has a button that returns the user to the [][][][][][]
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  */
 public class WinLossPopupView extends javax.swing.JPanel {
     GameViewController gvc;
     SignInViewController svc;
     
     /**
-     * Creates new form WinLossPopupView
+     * Constructor
+     * Creates the PWinLossPopupView and initialize components
      */
     public WinLossPopupView() {
         initComponents();
@@ -35,15 +39,12 @@ public class WinLossPopupView extends javax.swing.JPanel {
         mmButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 255));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lossLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lossLabel.setText("You Lose...");
-        add(lossLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 37, 143, -1));
 
         winLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         winLabel.setText("You Win!!!!");
-        add(winLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 77, -1, -1));
 
         mmButton.setText("Return to Matchmaking");
         mmButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -51,7 +52,30 @@ public class WinLossPopupView extends javax.swing.JPanel {
                 mmButtonMouseClicked(evt);
             }
         });
-        add(mmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 124, -1, -1));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lossLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mmButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(winLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lossLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(winLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mmButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void mmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mmButtonMouseClicked
@@ -59,7 +83,6 @@ public class WinLossPopupView extends javax.swing.JPanel {
         svc.SendLoginRequest(svc.globalUser, svc.globalPassword); // go back to matchmaking
         gvc.hideView(); // hides game view and popup view
     }//GEN-LAST:event_mmButtonMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel lossLabel;

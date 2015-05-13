@@ -13,7 +13,8 @@ import javax.swing.JTextArea;
 
 /**
  * The GameViewBoard displays the Gomoku game board that consists of JButtons
- * that will change color depending on the player's input.
+ * with reference to the row and column and changes color depending on the 
+ * player's input.
  */
 public class GameViewBoard extends JPanel{
     private int row, col;
@@ -26,7 +27,7 @@ public class GameViewBoard extends JPanel{
     public int count = 0; //current number of moves
     
     /**
-     * Constructor, initializes the GameViewBoard
+     * Constructor, initializes the GameViewBoard and sets up the Gomoku board.
      * @param con, the GameViewController
      */
     public GameViewBoard(GameViewController con){
@@ -35,7 +36,7 @@ public class GameViewBoard extends JPanel{
         col = boardSize;
         current = new GameViewModel(boardSize, boardSize);
         
-        //Sets up grid
+        //Sets up grid and assigns each button an actionListener
         this.setLayout(new GridLayout(row,col));
         square = new MyJButton[row][col];
         SquareListener listener = new SquareListener();
@@ -51,35 +52,6 @@ public class GameViewBoard extends JPanel{
     }
     
     /**
-     * Changes cell color indicating the cell has a Gomoku piece.
-     * All yellow cells will change to a black cell.
-     * @param i, the row
-     * @param j, the column
-     */
-    private void updateCell(int i, int j){
-        if(current.getCell(i,j)== GameViewModel.boardColor)
-            square[i][j].setBackground(boardColor);
-        if(current.getCell(i,j)== GameViewModel.yellow)
-            square[i][j].setBackground(Color.BLACK);
-        if(current.getCell(i,j)== GameViewModel.white)
-            square[i][j].setBackground(Color.WHITE);
-        if(current.getCell(i,j)== GameViewModel.black)
-            square[i][j].setBackground(Color.BLACK);
-    }
-    
-    /**
-     * Updates the board, sends the grid to opponent, vice versa
-     */
-    public void updateGrid() {
-         for(int i =0; i<row; i++)
-            for (int j=0; j<col; j++){
-                updateCell(i,j);
-            }
-        count=0;
-        //if win condition, call showLoss/showWin
-    }
-    
-    /**
      * Updates the location of a given cell to white
      * @param i, the row
      * @param j, the column
@@ -88,6 +60,11 @@ public class GameViewBoard extends JPanel{
         square[i][j].setBackground(Color.WHITE);
     }
     
+    /**
+     * Updates the location of the yellow cell to black
+     * @param i, the row
+     * @param j, the column
+     */
     public void updateYellowSquare(int i, int j){
         square[i][j].setBackground(Color.BLACK);
     }
@@ -138,11 +115,20 @@ public class GameViewBoard extends JPanel{
         public int i; //the row
         public int j; //the column
         
+        /**
+         * JButton with a reference to the row and column.
+         * @param row, the row
+         * @param column, the column
+         */
         public MyJButton(int row, int column){
             i = row;
             j = column;
         }
         
+        /**
+         * Public helper method to find the background color in String form.
+         * @return the String representation of the background color
+         */
         public String getColor(){
             return getBackground().toString();
         }

@@ -62,6 +62,7 @@ public class GameViewController implements Runnable{
      * GameViewBoard (the game board JPanel).
      * Attempts to create a serverSocket
      * Starts the thread
+     * This Constructor
      */
     public GameViewController(String username){
         view = new GameView(this);
@@ -79,6 +80,7 @@ public class GameViewController implements Runnable{
             serverSocket = new ServerSocket(8080);
             System.out.println("Server Socket open");
             disableTurn();
+            view2.count = 1;
         } catch (IOException ex) {
             ex.printStackTrace();
             System.out.println("Could not create port.");
@@ -93,6 +95,8 @@ public class GameViewController implements Runnable{
      * Creates a peer-to-peer connection using a ServerSocket
      * Creates the JFrame to hold the GameView (the chat JPanel) and the
      * GameViewBoard (the game board JPanel).
+     * This Constructor will send their IP and username and attempt to connect
+     * to the previous constructor that has created the 
      * @param IP
      * @param username
      */
@@ -120,7 +124,6 @@ public class GameViewController implements Runnable{
             out = socket.getOutputStream();
             p2.starter();
             enableTurn();
-            
         } catch (IOException ex) {
             System.out.println("Could not connect to other player");
         }

@@ -41,23 +41,6 @@ public class GameViewModel {
     }
     
     /**
-     * Copy Constructor
-     * Preconditions: the copy is not null
-     * This constructor will make a deep copy of the GameViewModel
-     * @param copy, the GameViewModel that is to be copied
-     */
-    public GameViewModel(GameViewModel copy){
-        this.row = copy.row;
-        this.column = copy.column;
-        this.grid = new int[this.row][this.column];
-        for (int i=0; i<this.row; i++){
-            for (int j=0; j<this.column; j++){
-                this.grid[i][j]=copy.grid[i][j];
-            }
-        }
-    }
-    
-    /**
      * returns the number of rows
      * @return the rows
      */
@@ -71,56 +54,6 @@ public class GameViewModel {
      */
     public int getColumns() {
         return column;
-    }
-    
-    /**
-     * Helper method that changes all black cells to white cells and is used
-     * in the sendGrid method.
-     * @param blackCell, the black cells to be updated
-     */
-    public void updateBlackCells(GameViewModel blackCell){
-        for (int i=0; i<this.row; i++){
-            for (int j=0; j<this.column; j++){
-                if (blackCell.grid[i][j] == black)
-                    this.grid[i][j] = white;
-            }
-        }
-    }
-    
-    /**
-     * Copies an existing GameViewModel
-     * @param copy, the GameViewModel to be copied
-     */
-    public void copyGrid(GameViewModel copy) {
-        for (int i=0; i<this.row; i++){
-            for (int j=0; j<this.column; j++){
-                this.grid[i][j]=copy.grid[i][j];
-                
-            }
-        }
-    }
-    
-    /**
-     * this.grid must contain an element in position [i][j] and status is a
-     * legal value (i.e., between [0,3]).
-     * setCell assigns grid element in row i and column j to status
-     * @param i, the row
-     * @param j, the column
-     * @param value, the value grid[i][j] is set to
-     */
-    public void setCell(int i, int j, int value) {
-        grid[i][j] = value;
-    }
-    
-    /**
-     * this.grid must contain an element in position [i][j] and the method
-     * returns the value of the element in row i and column j
-     * @param i, the row
-     * @param j, the column
-     * @return the value in grid[i][j]
-     */
-    public int getCell(int i, int j) {
-        return grid[i][j];
     }
     
     /**
@@ -187,6 +120,9 @@ public class GameViewModel {
             col = c;
         }
         
+        /**
+         * @return str, the row and column number in parentheses
+         */
         public String toString(){
             String str = "(" + row + ", " + col + ")";
             return str;
