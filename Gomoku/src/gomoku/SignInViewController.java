@@ -119,6 +119,8 @@ class SignInViewController implements Runnable{
      * @param pass, the password of the user
      */
     public void createNewUser(String user, String pass){
+        globalUser = user; // sets user to class variable for later access
+        globalPassword = pass; // sets password to class variable for later access
         String msg = "C, " + user + ", " + pass + "\n";
         USERNAME = user;
         sendMsg(msg);
@@ -155,9 +157,12 @@ class SignInViewController implements Runnable{
         else if (msg.charAt(0) == 'Y'){
             for(int i = 3; i < msg.length(); i++){
                 current = msg.charAt(i);
-                if(current == ',' || current == '\n'){
+                if(current == ','){
                     onlineUsers.add(username.trim());
                     username = "";
+                }
+                else if(current == '\n'){
+                    break;
                 }
                 else{
                     username += msg.charAt(i);

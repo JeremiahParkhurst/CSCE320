@@ -71,4 +71,10 @@ public class TitleViewController implements ViewController{
         connecting.showView();
         this.hideView();
     }
+    
+    public void rejoinMultiPlayer(String user, String pass){
+        ConnectingViewController connecting = new ConnectingViewController(this, IP);
+        connecting.reJoinView(user, pass);
+        this.hideView();
+    }
 }

@@ -21,6 +21,7 @@ public class NetworkedPlayer implements Runnable{
     GameViewBoard gb;
     String row;
     String column;
+    boolean listening = true;
     
     /**
      *
@@ -76,7 +77,7 @@ public class NetworkedPlayer implements Runnable{
      *
      */
     public void listen(){
-        while(true){
+        while(listening){
             try{
                 int read = in.read(buffer);
                 if(read > 0){
@@ -115,6 +116,13 @@ public class NetworkedPlayer implements Runnable{
             } catch (IOException ex) {
                 System.out.println("Couldn't read msg.");
                 System.out.println("Other user Disconnected \nExit to Matchmaking");
+                listening = false;
+                try {
+                    sock.close();
+                } catch (IOException ex1) {
+                    System.out.println("Could not close the Networked Players socket");
+                }
+                break;
             }
         }
     }
@@ -133,24 +141,5 @@ public class NetworkedPlayer implements Runnable{
      */
     public String getColumns() {
         return column;
-    }
-    
-    /**
-     * color is either GREEN, WHITE, YELLOW, or BLACK. The method returns
-     * a count of the number of cells in this.grid that equal color
-     * @param color the color used for the count
-     * @return the number of cells equal to color
-     */
-    public int cellCount(int color) {
-        int count = 0;
-        //  for (int i=0; i<this.row; i++){
-        //     for (int j=0; j<this.column; j++){
-        //     if(this.grid[i][j] == color)
-        //            count = count + 1;
-        
-        // }
-        //    }
-        // return count;
-        return 0;
     }
 }

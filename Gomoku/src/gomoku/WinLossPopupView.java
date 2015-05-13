@@ -23,11 +23,9 @@ import java.util.logging.Logger;
 public class WinLossPopupView extends javax.swing.JPanel {
     GameViewController gvc;
     SignInViewController svc;
-    Gomoku gomoku;
-    Socket s;
+    ConnectingViewController cvc;
     TitleViewController tvc;
-    InputStream in;
-    OutputStream out;
+    String ip = "152.117.243.155";
     
     public WinLossPopupView(GameViewController gv, SignInViewController sv){
         gvc = gv;
@@ -89,8 +87,14 @@ public class WinLossPopupView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mmButtonMouseClicked
-        svc.SendLoginRequest(svc.globalUser, svc.globalPassword); // go back to matchmaking
+        tvc = new TitleViewController(ip);
+        tvc.rejoinMultiPlayer(svc.globalUser, svc.globalPassword);
         gvc.hideView(); // hides game view and popup view
+        try {
+            gvc.socket.close();
+        } catch (IOException ex) {
+            System.out.println("Server Socket not closed properly");
+        }
     }//GEN-LAST:event_mmButtonMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

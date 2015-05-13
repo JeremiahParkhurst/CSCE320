@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import javax.swing.JFrame;
 
@@ -28,8 +29,8 @@ public class GameViewController implements Runnable{
     private DifficultyViewController vcon;
     private JFrame app;
     private JFrame WLView;
-    private ServerSocket serverSocket;
-    private Socket socket;
+    public ServerSocket serverSocket;
+    public Socket socket;
     private Thread t;
     private InputStream in;
     private OutputStream out;
@@ -37,6 +38,7 @@ public class GameViewController implements Runnable{
     private byte[] buffer;
     private boolean hasServerSocket;
     private NetworkedPlayer p2;
+    public boolean connected = false;
     
     /**
      * Constructor, initializes the GameViewController
@@ -164,7 +166,7 @@ public class GameViewController implements Runnable{
      * initializes the thread.
      */
     public void run() {
-        boolean connected = false;
+        //connected = false;
         while(!connected){
             System.out.println("Waiting for connection");
             try{

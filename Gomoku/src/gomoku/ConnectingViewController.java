@@ -21,6 +21,9 @@ public class ConnectingViewController implements Runnable{
     int attempt;
     private String IP;
     private final int PORT = 2525;
+    boolean checkUser = false;
+    String rejoinUser;
+    String rejoinPass;
     
     /**
      * Constructor initializes the ConnectingViewController
@@ -48,6 +51,15 @@ public class ConnectingViewController implements Runnable{
         starter();
     }
     
+    public void reJoinView(String user, String pass){
+        if(user != null && pass != null){
+            checkUser = true;
+        }
+        rejoinUser = user;
+        rejoinPass = pass;
+        starter();
+    }
+    
     /**
      * Hides this view.
      */
@@ -63,6 +75,18 @@ public class ConnectingViewController implements Runnable{
     private void connectionEstablished(){
         SignInViewController signIn = new SignInViewController(from,s);
         signIn.showView();
+        this.hideView();
+    }
+    
+    /**
+     * If the connection with the server is successfully re-established, the SignInViewController
+     * will be created but will skip the actual steps of entering a username and password and 
+     * instead run the login method. This is used for re-joining the server after a game
+     * Hides the this view.
+     */
+    private void connectionReEstablished(){
+        SignInViewController signIn = new SignInViewController(from,s);
+        signIn.SendLoginRequest(rejoinUser, rejoinPass);
         this.hideView();
     }
     
@@ -85,7 +109,10 @@ public class ConnectingViewController implements Runnable{
                 attempt++;
             }
         }
-        connectionEstablished();
+        if(checkUser == false)
+            connectionEstablished();
+        else 
+            connectionReEstablished();
     }
     
     /**

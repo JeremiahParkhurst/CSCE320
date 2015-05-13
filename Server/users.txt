@@ -3,3 +3,7 @@ jtp, killa
 bear, bear
 Snarf, Catz
 asdf, asdf
+Jeremy, Parkhurst
+Mack, Snider
+John, Doan
+Brendan, Peterson

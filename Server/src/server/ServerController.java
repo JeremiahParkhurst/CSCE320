@@ -106,11 +106,7 @@ public class ServerController implements Runnable{
      * @param s, the username
      */
     public void removeOnlineUsers(String s){
-        //System.out.println();
-        //System.out.println("Connection before remove: " + connectionList.size());
         int location = -1;
-        // ******* Find method to find user based on the string username
-        // ******* Then call connectionList.remove on what is found
         for(int i = 0; i < connectionList.size(); i++){
             if(connectionList.get(i).postUsername().equals(s)){
                 location = i;

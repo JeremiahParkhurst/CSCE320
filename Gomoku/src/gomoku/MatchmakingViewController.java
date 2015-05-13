@@ -184,6 +184,7 @@ public class MatchmakingViewController implements Runnable{
                     username += msg.charAt(i);
                 }
             }
+            System.out.println("In Matchmaking View Controller: Users are: " + onlineUsers);
             view.updateUsers(onlineUsers,USERNAME);
         }
         else if (key == 'R'){//for recieving an invite
@@ -253,7 +254,7 @@ public class MatchmakingViewController implements Runnable{
     
     /**
      * Displays a message announcing the new invitation
-     * adds the invitation to a list of recieved invites
+     * adds the invitation to a list of received invites
      * @param from the username of the person who sent the invite
      */
     public void updateRequest(String from, String ar){

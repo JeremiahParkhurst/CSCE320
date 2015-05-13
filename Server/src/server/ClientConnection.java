@@ -193,7 +193,7 @@ public class ClientConnection extends Thread{
                             if(existingUser == true){
                                 //controller.post("Able to create and login user: " + s);
                                 name = getUsername(s);
-                                controller.post("User created and logged in: ");
+                                controller.post("User created and logged in");
                                 sendMsg("Y, " + controller.getOnlineUsers() + "\n");
                                 controller.broadcast("U, " + controller.getOnlineUsers() + "\n");
                             }
@@ -279,13 +279,6 @@ public class ClientConnection extends Thread{
      * @param msg The string that is passed from broadcast
      */
     public void sendMsg(String msg){
-        /*if(msg.charAt(0) == 'U' || msg.charAt(0) == 'B'){ // no need for update or busy console messages
-            // nothing
-        }
-        else{
-            controller.post(msg); // post msg as long as it is not an update or repeat of busy message
-        }*/
-        
         byte[] b = msg.getBytes();
         try{
             out.write(b);
