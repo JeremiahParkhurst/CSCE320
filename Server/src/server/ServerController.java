@@ -114,7 +114,6 @@ public class ServerController implements Runnable{
         for(int i = 0; i < connectionList.size(); i++){
             if(connectionList.get(i).postUsername().equals(s)){
                 location = i;
-                //System.out.println("Location is: " + location);
             }
         }
         if(location > -1){
@@ -122,8 +121,6 @@ public class ServerController implements Runnable{
                 connectionList.remove(location);
                 broadcast("U, " + getOnlineUsers() + "\n");
                 post("This user logged off: " + s);
-                //System.out.println("Connection after remove: " + connectionList.size());
-                //System.out.println();
             }
         }
     }

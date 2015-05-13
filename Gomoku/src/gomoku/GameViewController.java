@@ -24,6 +24,7 @@ public class GameViewController implements Runnable{
     private GameViewBoard view2;
     private GameViewModel gmod;
     private WinLossPopupView winloss;
+    private SignInViewController vc;
     private DifficultyViewController vcon;
     private JFrame app;
     private JFrame WLView;
@@ -64,7 +65,7 @@ public class GameViewController implements Runnable{
      * Starts the thread
      * This Constructor
      */
-    public GameViewController(String username){
+    public GameViewController(String username, SignInViewController svc){
         view = new GameView(this);
         view2 = new GameViewBoard(this);
         gmod = new GameViewModel(view2.boardSize, view2.boardSize);
@@ -75,6 +76,7 @@ public class GameViewController implements Runnable{
         app.pack();
         app.setBackground(new Color(204,204,255));
         buffer = new byte[SIZE];
+        vc = svc;
         
         try {
             serverSocket = new ServerSocket(8080);
@@ -100,7 +102,7 @@ public class GameViewController implements Runnable{
      * @param IP
      * @param username
      */
-    public GameViewController(String IP, String username){
+    public GameViewController(String IP, String username, SignInViewController svc){
         view = new GameView(this);
         view2 = new GameViewBoard(this);
         gmod = new GameViewModel(view2.boardSize, view2.boardSize);
@@ -111,6 +113,7 @@ public class GameViewController implements Runnable{
         app.pack();
         app.setBackground(new Color(204,204,255));
         buffer = new byte[SIZE];
+        vc = svc;
         
         try {
             socket = new Socket(IP,8080);
@@ -199,7 +202,7 @@ public class GameViewController implements Runnable{
      * Displays the loss menu when the player loses.
      */
     public void showLoss(){
-        winloss = new WinLossPopupView();
+        winloss = new WinLossPopupView(this,vc);
         WLView = new JFrame("End Game");
         WLView.add(winloss);
         WLView.pack();
@@ -212,7 +215,7 @@ public class GameViewController implements Runnable{
      * Display the win menu when the player wins.
      */
     public void showWin(){
-        winloss = new WinLossPopupView();
+        winloss = new WinLossPopupView(this,vc);
         WLView = new JFrame("End Game");
         WLView.add(winloss);
         WLView.pack();

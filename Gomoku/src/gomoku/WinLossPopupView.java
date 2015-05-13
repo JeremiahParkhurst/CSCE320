@@ -1,5 +1,12 @@
 package gomoku;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * This class displays the post-game view that displays "You Win!!!" if the
  * player has not receive a message from the gameOver method within the 
@@ -16,12 +23,15 @@ package gomoku;
 public class WinLossPopupView extends javax.swing.JPanel {
     GameViewController gvc;
     SignInViewController svc;
+    Gomoku gomoku;
+    Socket s;
+    TitleViewController tvc;
+    InputStream in;
+    OutputStream out;
     
-    /**
-     * Constructor
-     * Creates the PWinLossPopupView and initialize components
-     */
-    public WinLossPopupView() {
+    public WinLossPopupView(GameViewController gv, SignInViewController sv){
+        gvc = gv;
+        svc = sv;
         initComponents();
     }
 
@@ -79,7 +89,6 @@ public class WinLossPopupView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mmButtonMouseClicked
-        //svc = new SignInViewController();
         svc.SendLoginRequest(svc.globalUser, svc.globalPassword); // go back to matchmaking
         gvc.hideView(); // hides game view and popup view
     }//GEN-LAST:event_mmButtonMouseClicked

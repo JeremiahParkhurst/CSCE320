@@ -105,10 +105,11 @@ class SignInViewController implements Runnable{
      */
     public void SendLoginRequest(String username, String password){
         globalUser = username; // sets user to class variable for later access
-        globalUser = password; // sets password to class variable for later access
+        globalPassword = password; // sets password to class variable for later access
         String msg = "L, " + username + ", " + password + "\n";
         USERNAME = username;
         sendMsg(msg);
+        System.out.println("Login request sent: " + msg);
         perform();
     }
     

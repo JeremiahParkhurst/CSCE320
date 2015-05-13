@@ -250,6 +250,7 @@ public class ClientConnection extends Thread{
                         String profile = s.substring(3, s.length()-1); 
                         Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
                         String from = scan.next(); 
+                        controller.removeOnlineUsers(from);
                         String busyMsg = "B, " + from+ "\n";
                         controller.broadcast(busyMsg);
                     }
