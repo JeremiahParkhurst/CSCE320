@@ -104,7 +104,7 @@ public class GameViewModel {
     }
     
     /**
-     * Helper method that has the coordinates of a cell
+     * Helper class that has the coordinates of a cell
      */
     public static class Cell {
         private int row;
