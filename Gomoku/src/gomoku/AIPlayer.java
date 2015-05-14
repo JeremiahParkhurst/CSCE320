@@ -65,10 +65,15 @@ public class AIPlayer {
                     numberConnected = 0;
                 }
                 else{
-                    numberConnected += northSouth(i,j,1);
-                    numberConnected += westEast(i,j,1);
-                    numberConnected += northWestSouthEast(i,j,1);
-                    numberConnected += northEastSouthWest(i,j,1);
+                    numberConnected += northSouth(i,j,2);
+                    numberConnected += westEast(i,j,2);
+                    numberConnected += northWestSouthEast(i,j,2);
+                    numberConnected += northEastSouthWest(i,j,2);
+                    
+                    numberConnected += northSouth(i,j,3);
+                    numberConnected += westEast(i,j,3);
+                    numberConnected += northWestSouthEast(i,j,3);
+                    numberConnected += northEastSouthWest(i,j,3);
                 }
                 priorityBoard[i][j] = numberConnected;
             }
