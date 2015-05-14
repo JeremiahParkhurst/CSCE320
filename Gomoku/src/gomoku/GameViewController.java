@@ -39,6 +39,8 @@ public class GameViewController implements Runnable{
     private boolean hasServerSocket;
     private NetworkedPlayer p2;
     public boolean connected = false;
+    public int dif = -1;
+    public AIPlayer ai;
     
     /**
      * Constructor, initializes the GameViewController
@@ -58,6 +60,9 @@ public class GameViewController implements Runnable{
         app.setResizable(false);
         app.setBackground(new Color(204,204,255));
         vcon = vc;
+        dif = difficulty;
+        ai = new AIPlayer(dif);
+        enableTurn();
     }
     
     /**
@@ -67,9 +72,9 @@ public class GameViewController implements Runnable{
      * Starts the thread
      * This Constructor
      */
-    public GameViewController(String username, SignInViewController svc){
+    public GameViewController(String username, SignInViewController svc, int boardSize){
         view = new GameView(this);
-        view2 = new GameViewBoard(this);
+        view2 = new GameViewBoard(this, boardSize);
         gmod = new GameViewModel(view2.boardSize, view2.boardSize);
         app = new JFrame(username + "'s Game View");
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,9 +109,9 @@ public class GameViewController implements Runnable{
      * @param IP
      * @param username
      */
-    public GameViewController(String IP, String username, SignInViewController svc){
+    public GameViewController(String IP, String username, SignInViewController svc, int boardSize){
         view = new GameView(this);
-        view2 = new GameViewBoard(this);
+        view2 = new GameViewBoard(this, boardSize);
         gmod = new GameViewModel(view2.boardSize, view2.boardSize);
         app = new JFrame(username + "'s Game View");
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -227,6 +232,34 @@ public class GameViewController implements Runnable{
     }
     
     /**
+     * Displays the loss menu when the player loses.
+     */
+    public void showAILoss(){
+        winloss = new WinLossPopupView(this,vc);
+        WLView = new JFrame("End Game");
+        WLView.add(winloss);
+        WLView.pack();
+        WLView.setResizable(false);
+        WLView.setVisible(true);
+        winloss.winLabel.setVisible(false);
+        winloss.mmButton.setVisible(false);
+    }
+    
+    /**
+     * Display the win menu when the player wins.
+     */
+    public void showAIWin(){
+        winloss = new WinLossPopupView(this,vc);
+        WLView = new JFrame("End Game");
+        WLView.add(winloss);
+        WLView.pack();
+        WLView.setResizable(false);
+        WLView.setVisible(true);
+        winloss.lossLabel.setVisible(false);
+        winloss.mmButton.setVisible(false);
+    }
+    
+    /**
      * This message is displayed in the statusTextArea when the user
      * makes an invalid move.
      */
@@ -271,7 +304,7 @@ public class GameViewController implements Runnable{
         if(yellowCell == null){
             view.appendMoveStatus("Move Availible");
         }
-        else{
+        else if(dif == -1){
             String stringT = "T, " + yellowCell.toString(); // formats turn msg
             String stringW = "W, " + yellowCell.toString(); // formats win msg
             // following 6 lines format r and c to be integers for calling updateYellowSquare
@@ -285,11 +318,26 @@ public class GameViewController implements Runnable{
             
             if(gameOver(view2.square) == false){
                 disableTurn();
-                p2.sendMsg(stringT); 
+                p2.sendMsg(stringT); // sends T, row, column
             }
             else{
                 showWin();
                 p2.sendMsg(stringW);
+            }
+        }
+        else{ // for offline gameplay
+            if(gameOver(view2.square) == false){ // enter turn, if win condition false
+                disableTurn();
+                ai.getMove(gmod.grid);
+                if(!gameOver(view2.square)){ // if AI, win condition false
+                    enableTurn();
+                }
+                else{ // if AI, win condition true
+                    showAILoss();
+                }
+            }
+            else{ // if win condition is true
+                showAIWin();
             }
         }
     }
