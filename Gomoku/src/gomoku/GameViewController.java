@@ -16,9 +16,13 @@ import javax.swing.JFrame;
  * The GameViewController handles and listens to all actions preformed
  * from the GameView. Such as chat messages between players, and messages
  * regarding their selected moves.
- * Creates a peer-to-peer connection between two players.
- *
- * NOTE: NOT FULLY IMPLEMENTED
+ * Creates a peer-to-peer connection between two players. When gameOver is
+ * called the winning player will be able to see the WinLossPopupView
+ * displaying that they won, otherwise a losing message will be displayed.
+ * If the player played against an AI, then they will have the option of
+ * returning to the title view. If the player played against another person,
+ * then the WinLossPopupView will have the option of returning to the 
+ * matchmaking view or the title view.
  */
 public class GameViewController implements Runnable{
     private GameView view;
@@ -43,8 +47,10 @@ public class GameViewController implements Runnable{
     public AIPlayer ai;
     
     /**
-     * Constructor, initializes the GameViewController
-     * @param vc, the DifficultyViewController that directs to the
+     * Constructor, initializes the GameViewController, and enables the
+     * the buttons on the GameView and GameViewBoard to allow the player to
+     * make the first move against the AI.
+     * @param vc, the DifficultyViewController that directs to the 
      * GameViewController
      * @param difficulty, the difficulty of the AI
      */
@@ -68,9 +74,10 @@ public class GameViewController implements Runnable{
     /**
      * Creates the JFrame to hold the GameView (the chat JPanel) and the
      * GameViewBoard (the game board JPanel).
-     * Attempts to create a serverSocket
-     * Starts the thread
-     * This Constructor
+     * Attempts to create a serverSocket and initializes the thread.
+     * This Constructor represents the player who sent the invite, and
+     * create a server socket, and allows this player to make the first move
+     * within the Gomoku game.
      */
     public GameViewController(String username, SignInViewController svc, int boardSize){
         view = new GameView(this);
@@ -94,20 +101,22 @@ public class GameViewController implements Runnable{
             ex.printStackTrace();
             System.out.println("Could not create port.");
         }
-        
         starter();
         view.displayUserName(username);
     }
     
     /**
-     * Receives the IP of the other players server
-     * Creates a peer-to-peer connection using a ServerSocket
+     * Receives the IP of the other player's server socket.
+     * Creates a peer-to-peer connection using a ServerSocket.
      * Creates the JFrame to hold the GameView (the chat JPanel) and the
      * GameViewBoard (the game board JPanel).
      * This Constructor will send their IP and username and attempt to connect
-     * to the previous constructor that has created the 
-     * @param IP
-     * @param username
+     * to the previous constructor that has created the server socket.
+     * @param IP, the ip address
+     * @param username, the username of this player
+     * @param boardSize, the size of the board to be passed into the
+     * GameViewController, which will be passed onto the GameViewBoard to set
+     * the size of the board for the Gomoku game.
      */
     public GameViewController(String IP, String username, SignInViewController svc, int boardSize){
         view = new GameView(this);
@@ -126,9 +135,7 @@ public class GameViewController implements Runnable{
             socket = new Socket(IP,8080);
             in = socket.getInputStream();
             out = socket.getOutputStream();
-            
             System.out.println("IP now:" + IP);
-            
             p2 = new NetworkedPlayer(socket, this);
             in = socket.getInputStream();
             out = socket.getOutputStream();
@@ -147,6 +154,9 @@ public class GameViewController implements Runnable{
         app.setVisible(true);
     }
     
+    /**
+     * @param msg, the message to be sent
+     */
     public void sendMsg(String msg){
         byte[] b = msg.getBytes();
         try{
@@ -166,8 +176,8 @@ public class GameViewController implements Runnable{
     }
     
     /**
-     * Attempts to creates a peer-to-peer connection by creating a serverSocket to
-     * establish and input and output stream between the two players and
+     * Attempts to creates a peer-to-peer connection by creating a serverSocket 
+     * to establish and input and output stream between the two players and
      * initializes the thread.
      */
     public void run() {
@@ -215,7 +225,8 @@ public class GameViewController implements Runnable{
         WLView.pack();
         WLView.setResizable(false);
         WLView.setVisible(true);
-        winloss.winLabel.setVisible(false); // Hides the You Win! Label
+        winloss.winLossJTextArea.setText("You Lose..."); // Display the lose message
+        winloss.winLossJTextArea.setEditable(false);
         winloss.tvButton.setVisible(false); // Hides the Return to TitleViewButton
     }
     
@@ -229,7 +240,8 @@ public class GameViewController implements Runnable{
         WLView.pack();
         WLView.setResizable(false);
         WLView.setVisible(true);
-        winloss.lossLabel.setVisible(false); // Hides the You Lose Label
+        winloss.winLossJTextArea.setText("You Win!!!"); //Display the win message
+        winloss.winLossJTextArea.setEditable(false);
         winloss.tvButton.setVisible(false); // Hides the Return to TitleViewButton
     }
     
@@ -243,7 +255,8 @@ public class GameViewController implements Runnable{
         WLView.pack();
         WLView.setResizable(false);
         WLView.setVisible(true);
-        winloss.winLabel.setVisible(false); // Hides the Win Label
+        winloss.winLossJTextArea.setText("You Lose..."); // Displays the losing message
+        winloss.winLossJTextArea.setEditable(false);
         winloss.mmButton.setVisible(false); // Hides the Return To Matchmaking Button
     }
     
@@ -257,12 +270,13 @@ public class GameViewController implements Runnable{
         WLView.pack();
         WLView.setResizable(false);
         WLView.setVisible(true);
-        winloss.lossLabel.setVisible(false); // Hides the Lose Label
+        winloss.winLossJTextArea.setText("You Win!!!"); // Displays the winning message.
+        winloss.winLossJTextArea.setEditable(false);
         winloss.mmButton.setVisible(false); // Hides the Return To Matchmaking Button
     }
     
     /**
-     * closeSingleEndGame closes the WinLossPopup for a singleplayer match
+     * Closes the WinLossPopup for a single player match
      */
     public void closeSingleEndGame(){
         WLView.setVisible(false);
@@ -292,22 +306,27 @@ public class GameViewController implements Runnable{
         view.appendMoveStatus("Move Deselected");
     }
     
+    /**
+     * Updates the GameViewBoard at location r, row and c, column.
+     * @param r, the row
+     * @param c, the column
+     */
     public void updateGrid(int r, int c){
         view2.updateMyGrid(r, c);
     }
     
     /**
      * This method is called from the GameView when sendMove is selected.
-     * Checks the board for a yellow cell by the findYellowCell and notifies
-     * the player if they can still make a move, otherwise call
-     * updateYellowCells which will change all yellow cells to black cells.
+     * Checks the board for a yellow cell by the findYellowCell method 
+     * and notifies the player if they can still make a move, otherwise call
+     * updateYellowSquare which will change the yellow cell at location (r,c) to
+     * a black cell.
      * Retrieves the location of the yellow cell which will be used to update
      * the opposing player's board. sendMsg will disable your board, and when
      * you receive a msg from sendMsg, it will enable your board.
-     * This method will also check from the win condition via the gameOver
+     * This method will also check fom the win condition via the gameOver
      * method.
      */
-    
     public void sendMoveButtonChosen(){
         Cell yellowCell = gmod.findYellowCell(view2.square);
         if(yellowCell == null){
@@ -366,7 +385,8 @@ public class GameViewController implements Runnable{
     }
     
     /**
-     * Checks the board for a winner
+     * Checks the board for a winner.
+     * @param board, the grid of button that represents the GameViewBoard
      * @return The players number if there is a winner or -1 for no winner
      */
     public boolean gameOver(MyJButton[][] board){

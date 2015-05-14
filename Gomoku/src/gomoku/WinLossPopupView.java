@@ -1,19 +1,16 @@
 package gomoku;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class displays the post-game view that displays "You Win!!!" if the
- * player has not receive a message from the gameOver method within the 
- * GameViewController, else the player will have a WinLossPopupView that 
+ * player has not receive a message from the gameOver method within the
+ * GameViewController, else the player will have a WinLossPopupView that
  * displays "You Lose..."
- * This class also has a button that returns the user to the [][][][][][]
- * 
+ * This class also has a button that returns the user to the matchmaking view 
+ * if they were playing against another player or to return to the title view, 
+ * otherwise the player will only have option of returning to the title view if 
+ * they were playing versus an AI.
  */
 public class WinLossPopupView extends javax.swing.JPanel {
     GameViewController gvc;
@@ -22,12 +19,15 @@ public class WinLossPopupView extends javax.swing.JPanel {
     TitleViewController tvc;
     String ip = "152.117.243.155";
     
-    public WinLossPopupView(GameViewController gv, SignInViewController sv){
+    /**
+     * Creates new form WinLossPopupView2
+     */
+    public WinLossPopupView(GameViewController gv, SignInViewController sv) {
         gvc = gv;
         svc = sv;
         initComponents();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,70 +37,69 @@ public class WinLossPopupView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lossLabel = new javax.swing.JLabel();
-        winLabel = new javax.swing.JLabel();
         mmButton = new javax.swing.JButton();
         tvButton = new javax.swing.JButton();
+        winLossJTextArea = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(204, 204, 255));
 
-        lossLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        lossLabel.setText("You Lose...");
-
-        winLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        winLabel.setText("You Win!!!!");
-
         mmButton.setText("Return to Matchmaking");
-        mmButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                mmButtonMouseClicked(evt);
+        mmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mmButtonActionPerformed(evt);
             }
         });
 
-        tvButton.setLabel("Return to Title View");
-        tvButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tvButtonMouseClicked(evt);
+        tvButton.setText("Return to Title");
+        tvButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tvButtonActionPerformed(evt);
             }
         });
+
+        winLossJTextArea.setFont(new java.awt.Font("Tahoma", 0, 72)); // NOI18N
+        winLossJTextArea.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(tvButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lossLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mmButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(winLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(winLossJTextArea)
+                    .addComponent(tvButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mmButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lossLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(winLabel)
+                .addComponent(winLossJTextArea, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mmButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tvButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void mmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mmButtonMouseClicked
+    
+    /**
+     * Creates a new TitleViewController with this player's IP address passed
+     * in, and calls the method within the TitleViewController to alow the 
+     * player to relog/rejoin and appear on the MatchmakingView.
+     * @param evt, when the "Return to Matchmaking" button is chosen
+     */
+    private void mmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmButtonActionPerformed
         tvc = new TitleViewController(ip);
         tvc.rejoinMultiPlayer(svc.globalUser, svc.globalPassword);
         gvc.hideView(); // hides game view and popup view
         try { // tries to close the socket
             gvc.socket.close();
-            try{ // tries to close the serverSocket 
-                 //(in its own try catch because only one client with have created a serverSocket
-            gvc.serverSocket.close();
+            try{ // tries to close the serverSocket
+                //(in its own try catch because only one client with have created a serverSocket
+                gvc.serverSocket.close();
             }
             catch(NullPointerException np){
                 System.out.println("This client cannot close the serverSocket, Other player will do so");
@@ -108,18 +107,23 @@ public class WinLossPopupView extends javax.swing.JPanel {
         } catch (IOException ex) {
             System.out.println("Server and/or Server Socket not closed properly");
         }
-    }//GEN-LAST:event_mmButtonMouseClicked
-
-    private void tvButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tvButtonMouseClicked
+    }//GEN-LAST:event_mmButtonActionPerformed
+    
+    /**
+     * Displays the TitleView and creates a new TitleViewController using
+     * this player's IP.
+     * @param evt, when the "Return to Title" is chosen.
+     */
+    private void tvButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tvButtonActionPerformed
         tvc = new TitleViewController(ip);
         tvc.showView();
         gvc.closeSingleEndGame();
-    }//GEN-LAST:event_tvButtonMouseClicked
-
+    }//GEN-LAST:event_tvButtonActionPerformed
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JLabel lossLabel;
     public javax.swing.JButton mmButton;
     public javax.swing.JButton tvButton;
-    public javax.swing.JLabel winLabel;
+    public javax.swing.JTextField winLossJTextArea;
     // End of variables declaration//GEN-END:variables
 }
