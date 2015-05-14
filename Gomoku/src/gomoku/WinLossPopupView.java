@@ -90,10 +90,17 @@ public class WinLossPopupView extends javax.swing.JPanel {
         tvc = new TitleViewController(ip);
         tvc.rejoinMultiPlayer(svc.globalUser, svc.globalPassword);
         gvc.hideView(); // hides game view and popup view
-        try {
+        try { // tries to close the socket
             gvc.socket.close();
+            try{ // tries to close the serverSocket 
+                 //(in its own try catch because only one client with have created a serverSocket
+            gvc.serverSocket.close();
+            }
+            catch(NullPointerException np){
+                System.out.println("This client cannot close the serverSocket, Other player will do so");
+            }
         } catch (IOException ex) {
-            System.out.println("Server Socket not closed properly");
+            System.out.println("Server and/or Server Socket not closed properly");
         }
     }//GEN-LAST:event_mmButtonMouseClicked
 

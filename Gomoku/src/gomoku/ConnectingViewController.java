@@ -51,6 +51,12 @@ public class ConnectingViewController implements Runnable{
         starter();
     }
     
+    /**
+     * reJoinView is made to run the starter method for getting to the login screen
+     * however, this method will pass a username and password so that login is automatic
+     * @param user The username of the previously logged in player
+     * @param pass The password of the previously logged in player
+     */
     public void reJoinView(String user, String pass){
         if(user != null && pass != null){
             checkUser = true;

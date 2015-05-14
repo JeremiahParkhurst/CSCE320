@@ -72,6 +72,13 @@ public class TitleViewController implements ViewController{
         this.hideView();
     }
     
+    /**
+     * rejoinMultiPlayer is a method for connecting back to the server and forwarding to the 
+     * matchmaking screen after successfully completing a game of Gomoku in multiplayer
+     * The username and password are sent into this in order to forward them on for automatic login
+     * @param user The username of the player who was logged on previously
+     * @param pass The password of the player who was logged on previously
+     */
     public void rejoinMultiPlayer(String user, String pass){
         ConnectingViewController connecting = new ConnectingViewController(this, IP);
         connecting.reJoinView(user, pass);
