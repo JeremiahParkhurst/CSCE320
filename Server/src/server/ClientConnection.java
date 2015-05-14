@@ -235,7 +235,9 @@ public class ClientConnection extends Thread{
                         Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
                         String to = scan.next(); // format from String: to
                         String from = scan.next(); // format to String: from
-                        controller.acceptInvite(from, to);
+                        String size = scan.next(); // format size String
+                        int intSize = Integer.parseInt(size);
+                        controller.acceptInvite(from, to, intSize);
                     }
                     else if(s.charAt(0) == 'D'){ // DECLINE INVITE, String is: D, to, from
                         controller.post("Declined invite: " + s);

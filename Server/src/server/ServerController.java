@@ -157,7 +157,7 @@ public class ServerController implements Runnable{
      * @param from, the invite sent from
      * @param to, the invite sent to
      */
-    public void acceptInvite(String from, String to) {
+    public void acceptInvite(String from, String to, int size) {
         // send "to", "from's" IP address with key of G: "G, IP address"
         String IP = "";
         for(int i = 0; i < connectionList.size(); i++){
@@ -169,7 +169,7 @@ public class ServerController implements Runnable{
         for(int i = 0; i < connectionList.size(); i++){
             if(connectionList.get(i).postUsername().equals(from)){
                 post("Sent " + to + "'s IP to: " + from + "   IP Message: ");
-                connectionList.get(i).sendMsg("G, " + IP + "\n");
+                connectionList.get(i).sendMsg("G, " + IP + ", " + size + "\n");
             }
         }
     }

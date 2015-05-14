@@ -3,14 +3,16 @@ package gomoku;
 import java.util.ArrayList;
 
 /**
- * The MatchmakingView sends information to the MatchMakingController 
+ * The MatchmakingView sends information to the MatchMakingController
  * when an action is preformed.
  * This view has two buttons, one to send an invite to another player, and
  * one for going back to the SignInView. This view also has a JList where
  * players can view players that are currently online.
  */
 public class MatchmakingView extends javax.swing.JPanel {
-MatchmakingViewController vcon;
+    MatchmakingViewController vcon;
+    int size = 0;
+    
     /**
      * Creates new form MatchmakingView
      */
@@ -18,7 +20,7 @@ MatchmakingViewController vcon;
         initComponents();
         vcon = vc;
     }
-
+    
     /**
      * Updates the list of current users online
      * @param a, the list of the users
@@ -32,6 +34,11 @@ MatchmakingViewController vcon;
         playerList.setListData(s);
     }
     
+    /**
+     * Holds the current list of game invites from other players within
+     * an array list.
+     * @param a, the list of requests a player has.
+     */
     public void updateRequests(ArrayList<String> a){
         String[] s = new String[a.size()];
         for(int i = 0; i < a.size(); i++){
@@ -40,6 +47,11 @@ MatchmakingViewController vcon;
         requestList.setListData(s);
     }
     
+    /**
+     * Sets the header title for the MatchmakingView with the username of
+     * the player.
+     * @param name, the name of the player.
+     */
     public void updateUName(String name){
         matchmakingLabel.setText("Matchmaking for: " + name);
     }
@@ -64,6 +76,8 @@ MatchmakingViewController vcon;
         acceptButton = new javax.swing.JButton();
         declineLabel = new javax.swing.JButton();
         requestsLabel = new javax.swing.JLabel();
+        boardSizeComboBox = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 204, 255));
 
@@ -106,6 +120,15 @@ MatchmakingViewController vcon;
 
         requestsLabel.setText("Requests:");
 
+        boardSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "20x20", "25x25", "30x30", "35x35" }));
+        boardSizeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boardSizeComboBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Select Board Size:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,20 +139,23 @@ MatchmakingViewController vcon;
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sendgameButton)
                             .addComponent(matchmakingLabel)
-                            .addComponent(playersOnlineLabel)
-                            .addComponent(menuButton)
-                            .addComponent(sendgameButton))
-                        .addGap(0, 120, Short.MAX_VALUE)))
+                            .addComponent(playersOnlineLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(menuButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                        .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(acceptButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(declineLabel)))
-                    .addComponent(requestsLabel))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(acceptButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(declineLabel))
+                    .addComponent(requestsLabel)
+                    .addComponent(boardSizeComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -151,41 +177,86 @@ MatchmakingViewController vcon;
                     .addComponent(acceptButton)
                     .addComponent(declineLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(menuButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(menuButton)
+                    .addComponent(boardSizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     *
+     * @param evt, when the sendInvite button is chosen by the player.
+     */
     private void sendgameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendgameButtonActionPerformed
-         String selected = playerList.getSelectedValue().toString();
+        String selected = playerList.getSelectedValue().toString();
         vcon.sendInvite(selected);
     }//GEN-LAST:event_sendgameButtonActionPerformed
-
+    
+    /**
+     * Calls the menuBtn method within the MatchmakingViewController
+     * @param evt, when the menu button is chosen by the player.
+     */
     private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
         vcon.logOff();
         vcon.menuBtn();
     }//GEN-LAST:event_menuButtonActionPerformed
-
+    
+    /**
+     * Calls the acceptInvite method within the MatchmakingViewController
+     * @param evt, when the accept button is chosen by the player.
+     */
     private void acceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptButtonActionPerformed
         String from = requestList.getSelectedValue().toString();
         if(from == null){
             from = requestList.getComponent(0).toString();
         }
-        vcon.acceptInvite(from);
+        vcon.acceptInvite(from,size);
     }//GEN-LAST:event_acceptButtonActionPerformed
-
+    
+    /**
+     * Calls the declineInvite method within the MatchmakingViewController
+     * @param evt, when the decline button is chosen by the player.
+     */
     private void declineLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_declineLabelActionPerformed
-       String from = requestList.getSelectedValue().toString();
+        String from = requestList.getSelectedValue().toString();
         if(from == null){
             from = requestList.getComponent(0).toString();
         }
         vcon.declineInvite(from);
     }//GEN-LAST:event_declineLabelActionPerformed
-
-
+    
+    /**
+     * This method is will determine the boardSize based on the user's
+     * selection within the boardSizeComboBox.
+     * @param evt, the value currently selected in the boardSizeComboBox
+     * will be passed onto the boardSizeComboBoxChosen method within
+     * the MatchmakingViewController.
+     */
+    private void boardSizeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boardSizeComboBoxActionPerformed
+        int boardSize = boardSizeComboBox.getSelectedIndex();
+        
+        if(boardSize == 0){
+            size = 0;
+        }
+        if(boardSize == 1){
+            size = 1;
+        }
+        if(boardSize == 2){
+            size = 2;
+        }
+        if(boardSize == 3){
+            size = 3;
+        }
+    }//GEN-LAST:event_boardSizeComboBoxActionPerformed
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton acceptButton;
+    private javax.swing.JComboBox boardSizeComboBox;
     private javax.swing.JButton declineLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel matchmakingLabel;

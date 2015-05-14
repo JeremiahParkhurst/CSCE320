@@ -11,7 +11,8 @@ import javax.swing.JFrame;
  * The MatchmakingViewController handles and listens to all actions preformed
  * from the MatchmakingView.
  * This class handles and updates the current list of users online and
- * messages being sent. It also handles game invitations between players.
+ * messages being sent. It also handles game invitations between players, and
+ * it will create a Gomoku game with the boardSize that the challenger picked.
  */
 public class MatchmakingViewController implements Runnable{
     
@@ -26,6 +27,7 @@ public class MatchmakingViewController implements Runnable{
     String msg;
     Thread t;
     String USERNAME;
+    int boardSize = 20;
     
     private byte[] buffer;
     private final int size = 1024;
@@ -65,8 +67,6 @@ public class MatchmakingViewController implements Runnable{
         for (String onlineUser : onlineUsers) {
             System.out.println(onlineUser);
         }
-        
-        
         view.updateUsers(onlineUsers, USERNAME);
     }
     
@@ -162,7 +162,7 @@ public class MatchmakingViewController implements Runnable{
     }
     
     /**
-     * process the message received
+     * Processes the message received
      * @param msg, the message being processed
      */
     public void proccessMsg(String msg){
@@ -206,19 +206,15 @@ public class MatchmakingViewController implements Runnable{
         }
         else if (key == 'G'){//other users responce good
             String ip = "";
-            for(int i = 3; i < msg.length(); i++){
-                current = msg.charAt(i);
-                if(current == '\n'){
-                    break;
-                }
-                else{
-                    ip += msg.charAt(i);
-                }
-            }
+            String profile = msg.substring(3, msg.length()-1); // Format string: to, from
+            Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
+            ip = scan.next(); // format ip variable
+            String size = scan.next(); // format size variable
+            int bSize = Integer.parseInt(size); // format size to integer
             System.out.println("IP: " + ip);
             String playerBusy = "B, " + USERNAME + "\n";
             sendMsg(playerBusy);
-            GameViewController gameViewCon = new GameViewController(ip,USERNAME,vc);
+            GameViewController gameViewCon = new GameViewController(ip,USERNAME,vc,size);
             gameViewCon.showView();
             this.hideView();
         }
@@ -247,7 +243,6 @@ public class MatchmakingViewController implements Runnable{
                     uName += msg.charAt(i);
                 }
             }
-            
             updateRequest(uName,"r");
         }
     }
@@ -264,8 +259,8 @@ public class MatchmakingViewController implements Runnable{
                 break;
             case "r":
                 if(recInvites.contains(from)){
-                    recInvites.remove(from);  
-                }   
+                    recInvites.remove(from);
+                }
                 break;
         }
         
@@ -278,21 +273,23 @@ public class MatchmakingViewController implements Runnable{
      * Creates a serversocket
      * sends a message to the server saying that they accept
      * opens a new gameview connected to "from"s gameview
-     * @param from
+     * @param from, the player sending the invite
      */
-    public void acceptInvite(String from){
-        String accept = "A, " + USERNAME + ", " + from + "\n";
+    public void acceptInvite(String from, int size){
+        boardSize = size;
+        String accept = "A, " + USERNAME + ", " + from + ", " + boardSize + "\n";
         sendMsg(accept);
         String playerBusy = "B, " + USERNAME + "\n";
         sendMsg(playerBusy);
-        GameViewController gameViewCon = new GameViewController(USERNAME,vc);
+        GameViewController gameViewCon = new GameViewController(USERNAME,vc,boardSize);
         gameViewCon.showView();
         this.hideView();
+        
     }
     
     /**
-     *
-     * @param from
+     * Declines the invite from the user who sent the invite.
+     * @param from, the username of the player who sent the game invite.
      */
     public void declineInvite(String from){
         String decline = "D, " + USERNAME + ", " + from + "\n";
@@ -301,7 +298,7 @@ public class MatchmakingViewController implements Runnable{
     }
     
     /**
-     * Sends a message to the server to broadcast Saying this user is no longer 
+     * Sends a message to the server to broadcast Saying this user is no longer
      * available for games
      */
     public void enteredGame(){

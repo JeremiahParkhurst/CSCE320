@@ -30,10 +30,12 @@ public class GameViewBoard extends JPanel{
      * Constructor, initializes the GameViewBoard and sets up the Gomoku board.
      * @param con, the GameViewController
      */
-    public GameViewBoard(GameViewController con){
+    public GameViewBoard(GameViewController con, int size){
         gcon = con;
+        boardSize = size;
         row = boardSize;
         col = boardSize;
+        
         current = new GameViewModel(boardSize, boardSize);
         
         //Sets up grid and assigns each button an actionListener
