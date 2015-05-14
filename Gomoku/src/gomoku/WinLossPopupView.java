@@ -14,11 +14,6 @@ import java.util.logging.Logger;
  * displays "You Lose..."
  * This class also has a button that returns the user to the [][][][][][]
  * 
- * 
- * 
- * 
- * 
- * 
  */
 public class WinLossPopupView extends javax.swing.JPanel {
     GameViewController gvc;
@@ -118,6 +113,7 @@ public class WinLossPopupView extends javax.swing.JPanel {
     private void tvButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tvButtonMouseClicked
         tvc = new TitleViewController(ip);
         tvc.showView();
+        gvc.closeSingleEndGame();
     }//GEN-LAST:event_tvButtonMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

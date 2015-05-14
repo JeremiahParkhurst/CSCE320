@@ -1,6 +1,7 @@
 package gomoku;
 
 import gomoku.GameViewBoard.MyJButton;
+import java.awt.Color;
 import javax.swing.JButton;
 
 /**
@@ -40,6 +41,15 @@ public class GameViewModel {
         }
     }
     
+    public void updateGrid(int row, int col, int color){
+        if(color == 0){
+            grid[row][col] = 2;
+        }
+        else if(color == 1){
+            grid[row][col] = 3;
+        }
+    } 
+   
     /**
      * returns the number of rows
      * @return the rows
@@ -54,35 +64,6 @@ public class GameViewModel {
      */
     public int getColumns() {
         return column;
-    }
-    
-    /**
-     * This method counts the number of black cells surrounding a given cell.
-     * @param i, the row
-     * @param j, the column
-     * @return count, the number of surrounding black cells
-     */
-    public int blackNeighbors(int i, int j){
-        int count = 0;
-        
-        if(grid[(i-1+row)%row][(j-1+column)%column] == 2)
-            count++;
-        if(grid[(i-1+row)%row][j] == 2)
-            count++;
-        if(grid[(i-1+row)%row][(j+1)%column] == 2)
-            count++;
-        if(grid[i][(j-1+column)%column] == 2)
-            count++;
-        if(grid[i][(j+1)%column] == 2)
-            count++;
-        if(grid[(i+1)%row][(j-1+column)%column] == 2)
-            count++;
-        if(grid[(i+1)%row][j] == 2)
-            count++;
-        if(grid[(i+1)%row][(j+1)%column] == 2)
-            count++;
-        
-        return count;
     }
     
     /**

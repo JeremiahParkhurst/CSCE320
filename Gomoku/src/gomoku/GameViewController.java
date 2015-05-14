@@ -50,7 +50,7 @@ public class GameViewController implements Runnable{
      */
     public GameViewController(DifficultyViewController vc, int difficulty){
         view = new GameView(this);
-        view2 = new GameViewBoard(this);
+        view2 = new GameViewBoard(this, 15);
         gmod = new GameViewModel(view2.boardSize, view2.boardSize);
         app = new JFrame("Gomoku");
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -161,8 +161,8 @@ public class GameViewController implements Runnable{
      * Hides the GameViewController
      */
     public void hideView() {
-        app.setVisible(false);
-        WLView.setVisible(false);
+            app.setVisible(false);
+            WLView.setVisible(false);
     }
     
     /**
@@ -215,7 +215,8 @@ public class GameViewController implements Runnable{
         WLView.pack();
         WLView.setResizable(false);
         WLView.setVisible(true);
-        winloss.winLabel.setVisible(false);
+        winloss.winLabel.setVisible(false); // Hides the You Win! Label
+        winloss.tvButton.setVisible(false); // Hides the Return to TitleViewButton
     }
     
     /**
@@ -228,35 +229,43 @@ public class GameViewController implements Runnable{
         WLView.pack();
         WLView.setResizable(false);
         WLView.setVisible(true);
-        winloss.lossLabel.setVisible(false);
+        winloss.lossLabel.setVisible(false); // Hides the You Lose Label
+        winloss.tvButton.setVisible(false); // Hides the Return to TitleViewButton
     }
     
     /**
      * Displays the loss menu when the player loses.
      */
-    public void showAILoss(){
+    public void showSingleLoss(){
         winloss = new WinLossPopupView(this,vc);
         WLView = new JFrame("End Game");
         WLView.add(winloss);
         WLView.pack();
         WLView.setResizable(false);
         WLView.setVisible(true);
-        winloss.winLabel.setVisible(false);
-        winloss.mmButton.setVisible(false);
+        winloss.winLabel.setVisible(false); // Hides the Win Label
+        winloss.mmButton.setVisible(false); // Hides the Return To Matchmaking Button
     }
     
     /**
      * Display the win menu when the player wins.
      */
-    public void showAIWin(){
+    public void showSingleWin(){
         winloss = new WinLossPopupView(this,vc);
         WLView = new JFrame("End Game");
         WLView.add(winloss);
         WLView.pack();
         WLView.setResizable(false);
         WLView.setVisible(true);
-        winloss.lossLabel.setVisible(false);
-        winloss.mmButton.setVisible(false);
+        winloss.lossLabel.setVisible(false); // Hides the Lose Label
+        winloss.mmButton.setVisible(false); // Hides the Return To Matchmaking Button
+    }
+    
+    /**
+     * closeSingleEndGame closes the WinLossPopup for a singleplayer match
+     */
+    public void closeSingleEndGame(){
+        WLView.setVisible(false);
     }
     
     /**
@@ -326,18 +335,32 @@ public class GameViewController implements Runnable{
             }
         }
         else{ // for offline gameplay
+            String s = yellowCell.toString();
+            System.out.println("s: " + s);
+            String profile = s.substring(1, s.length()-1);
+            Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
+            String row = scan.next();
+            String column = scan.next();
+            int r = Integer.parseInt(row);
+            int c = Integer.parseInt(column);
+            view2.updateYellowSquare(r,c);
+            gmod.updateGrid(r, c, 0);
             if(gameOver(view2.square) == false){ // enter turn, if win condition false
                 disableTurn();
-                ai.getMove(gmod.grid);
-                if(!gameOver(view2.square)){ // if AI, win condition false
+                int array[] = ai.getMove(gmod.grid);
+                gmod.updateGrid(array[0], array[1], 1);
+                view2.updateMyGrid(array[0], array[1]);
+                if(!gameOverSingle(view2.square)){ // if AI, win condition false
                     enableTurn();
                 }
                 else{ // if AI, win condition true
-                    showAILoss();
+                    app.setVisible(false);
+                    showSingleLoss();
                 }
             }
             else{ // if win condition is true
-                showAIWin();
+                app.setVisible(false);
+                showSingleWin();
             }
         }
     }
@@ -348,6 +371,31 @@ public class GameViewController implements Runnable{
      */
     public boolean gameOver(MyJButton[][] board){
         int color = 2;
+        for(int i = 0; i < view2.boardSize; i++){
+            for(int j = 0; j < view2.boardSize; j++){
+                if(toTheEast(color,i,j,0,board) == 5){
+                    return true;
+                }
+                else if(toTheSouthEast(color,i,j,0,board) == 5){
+                    return true;
+                }
+                else if(toTheSouth(color,i,j,0,board) == 5){
+                    return true;
+                }
+                else if(toTheSouthWest(color,i,j,0,board) == 5){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Checks the board for a winner in single player
+     * @return The players number if there is a winner or -1 for no winner
+     */
+    public boolean gameOverSingle(MyJButton[][] board){
+        int color = 3;
         for(int i = 0; i < view2.boardSize; i++){
             for(int j = 0; j < view2.boardSize; j++){
                 if(toTheEast(color,i,j,0,board) == 5){
@@ -396,21 +444,44 @@ public class GameViewController implements Runnable{
      * @return the number of consecutive occurrences of the colorInQuestion
      */
     private int toTheEast(int colorInQuestion, int row, int col, int count, MyJButton[][] boardModel){
-        if(count == 5){
-            return count;
+        if(colorInQuestion == 2){
+            if(count == 5){
+                return count;
+            }
+            else if(row >= view2.boardSize || col >= view2.boardSize){
+                return count;
+            }
+            else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
+                return count;
+            }
+            else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
+                count++;
+                return toTheEast(colorInQuestion,row,col+1,count,boardModel);
+            }
+            else{
+                return count;
+            }
         }
-        else if(row >= view2.boardSize || col >= view2.boardSize){
-            return count;
-        }
-        else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
-            return count;
-        }
-        else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
-            count++;
-            return toTheEast(colorInQuestion,row,col+1,count,boardModel);
+        else if(colorInQuestion == 3){
+            if(count == 5){
+                return count;
+            }
+            else if(row >= view2.boardSize || col >= view2.boardSize){
+                return count;
+            }
+            else if(!boardModel[row][col].getBackground().equals(java.awt.Color.WHITE)){
+                return count;
+            }
+            else if(boardModel[row][col].getBackground().equals(java.awt.Color.WHITE)){
+                count++;
+                return toTheEast(colorInQuestion,row,col+1,count,boardModel);
+            }
+            else{
+                return count;
+            }
         }
         else{
-            return count;
+            return 0;
         }
     }
     
@@ -424,21 +495,44 @@ public class GameViewController implements Runnable{
      * @return the number of consecutive occurrences of the colorInQuestion
      */
     private int toTheSouthEast(int colorInQuestion, int row, int col, int count, MyJButton[][] boardModel){
-        if(count == 5){
-            return count;
+        if(colorInQuestion == 2){
+            if(count == 5){
+                return count;
+            }
+            else if(row >= view2.boardSize || col >= view2.boardSize){
+                return count;
+            }
+            else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
+                return count;
+            }
+            else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
+                count++;
+                return toTheSouthEast(colorInQuestion,row +1,col+1,count,boardModel);
+            }
+            else{
+                return count;
+            }
         }
-        else if(row >= view2.boardSize || col >= view2.boardSize){
-            return count;
-        }
-        else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
-            return count;
-        }
-        else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
-            count++;
-            return toTheSouthEast(colorInQuestion,row +1,col+1,count,boardModel);
+        else if(colorInQuestion == 3){
+            if(count == 5){
+                return count;
+            }
+            else if(row >= view2.boardSize || col >= view2.boardSize){
+                return count;
+            }
+            else if(!boardModel[row][col].getBackground().equals(java.awt.Color.WHITE)){
+                return count;
+            }
+            else if(boardModel[row][col].getBackground().equals(java.awt.Color.WHITE)){
+                count++;
+                return toTheSouthEast(colorInQuestion,row +1,col+1,count,boardModel);
+            }
+            else{
+                return count;
+            }
         }
         else{
-            return count;
+            return 0;
         }
     }
     
@@ -452,21 +546,44 @@ public class GameViewController implements Runnable{
      * @return the number of consecutive occurrences of the colorInQuestion
      */
     private int toTheSouth(int colorInQuestion, int row, int col, int count, MyJButton[][] boardModel){
-        if(count == 5){
-            return count;
+        if(colorInQuestion == 2){
+            if(count == 5){
+                return count;
+            }
+            else if(row >= view2.boardSize || col >= view2.boardSize){
+                return count;
+            }
+            else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
+                return count;
+            }
+            else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
+                count++;
+                return toTheSouth(colorInQuestion,row+1,col,count,boardModel);
+            }
+            else{
+                return count;
+            }
         }
-        else if(row >= view2.boardSize || col >= view2.boardSize){
-            return count;
-        }
-        else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
-            return count;
-        }
-        else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
-            count++;
-            return toTheSouth(colorInQuestion,row+1,col,count,boardModel);
+        else if(colorInQuestion == 3){
+            if(count == 5){
+                return count;
+            }
+            else if(row >= view2.boardSize || col >= view2.boardSize){
+                return count;
+            }
+            else if(!boardModel[row][col].getBackground().equals(java.awt.Color.WHITE)){
+                return count;
+            }
+            else if(boardModel[row][col].getBackground().equals(java.awt.Color.WHITE)){
+                count++;
+                return toTheSouth(colorInQuestion,row+1,col,count,boardModel);
+            }
+            else{
+                return count;
+            }
         }
         else{
-            return count;
+            return 0;
         }
     }
     
@@ -480,21 +597,44 @@ public class GameViewController implements Runnable{
      * @return the number of consecutive occurrences of the colorInQuestion
      */
     private int toTheSouthWest(int colorInQuestion, int row, int col, int count, MyJButton[][] boardModel){
-        if(count == 5){
-            return count;
+        if(colorInQuestion == 2){
+            if(count == 5){
+                return count;
+            }
+            else if(col == -1 || row >= view2.boardSize || col >= view2.boardSize){
+                return count;
+            }
+            else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
+                return count;
+            }
+            else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
+                count++;
+                return toTheSouthWest(colorInQuestion,row+1,col-1,count,boardModel);
+            }
+            else{
+                return count;
+            }
         }
-        else if(col == -1 || row >= view2.boardSize || col >= view2.boardSize){
-            return count;
-        }
-        else if(!boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
-            return count;
-        }
-        else if(boardModel[row][col].getBackground().equals(java.awt.Color.BLACK)){
-            count++;
-            return toTheSouthWest(colorInQuestion,row+1,col-1,count,boardModel);
+        else if(colorInQuestion == 3){
+            if(count == 5){
+                return count;
+            }
+            else if(col == -1 || row >= view2.boardSize || col >= view2.boardSize){
+                return count;
+            }
+            else if(!boardModel[row][col].getBackground().equals(java.awt.Color.WHITE)){
+                return count;
+            }
+            else if(boardModel[row][col].getBackground().equals(java.awt.Color.WHITE)){
+                count++;
+                return toTheSouthWest(colorInQuestion,row+1,col-1,count,boardModel);
+            }
+            else{
+                return count;
+            }
         }
         else{
-            return count;
+            return 0;
         }
     }
 }

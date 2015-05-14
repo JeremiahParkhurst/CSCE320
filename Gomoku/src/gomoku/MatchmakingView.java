@@ -120,7 +120,7 @@ public class MatchmakingView extends javax.swing.JPanel {
 
         requestsLabel.setText("Requests:");
 
-        boardSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "20x20", "25x25", "30x30", "35x35" }));
+        boardSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15x15", "20x20", "25x25", "30x30", "35x35" }));
         boardSizeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 boardSizeComboBoxActionPerformed(evt);
@@ -208,6 +208,22 @@ public class MatchmakingView extends javax.swing.JPanel {
      * @param evt, when the accept button is chosen by the player.
      */
     private void acceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptButtonActionPerformed
+        int boardSize = boardSizeComboBox.getSelectedIndex();
+        if(boardSize == 0){
+            size = 15;
+        }
+        if(boardSize == 1){
+            size = 20;
+        }
+        if(boardSize == 2){
+            size = 25;
+        }
+        if(boardSize == 3){
+            size = 30;
+        }
+        if(boardSize == 4){
+            size = 35;
+        }
         String from = requestList.getSelectedValue().toString();
         if(from == null){
             from = requestList.getComponent(0).toString();
@@ -226,31 +242,27 @@ public class MatchmakingView extends javax.swing.JPanel {
         }
         vcon.declineInvite(from);
     }//GEN-LAST:event_declineLabelActionPerformed
-    
-    /**
-     * This method is will determine the boardSize based on the user's
-     * selection within the boardSizeComboBox.
-     * @param evt, the value currently selected in the boardSizeComboBox
-     * will be passed onto the boardSizeComboBoxChosen method within
-     * the MatchmakingViewController.
-     */
+
     private void boardSizeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boardSizeComboBoxActionPerformed
         int boardSize = boardSizeComboBox.getSelectedIndex();
-        
         if(boardSize == 0){
-            size = 0;
+            size = 15;
         }
         if(boardSize == 1){
-            size = 1;
+            size = 20;
         }
         if(boardSize == 2){
-            size = 2;
+            size = 25;
         }
         if(boardSize == 3){
-            size = 3;
+            size = 30;
+        }
+        if(boardSize == 4){
+            size = 35;
         }
     }//GEN-LAST:event_boardSizeComboBoxActionPerformed
     
+   
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton acceptButton;

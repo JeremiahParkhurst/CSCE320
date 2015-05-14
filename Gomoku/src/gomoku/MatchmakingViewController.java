@@ -214,7 +214,7 @@ public class MatchmakingViewController implements Runnable{
             System.out.println("IP: " + ip);
             String playerBusy = "B, " + USERNAME + "\n";
             sendMsg(playerBusy);
-            GameViewController gameViewCon = new GameViewController(ip,USERNAME,vc,size);
+            GameViewController gameViewCon = new GameViewController(ip,USERNAME,vc,bSize);
             gameViewCon.showView();
             this.hideView();
         }
