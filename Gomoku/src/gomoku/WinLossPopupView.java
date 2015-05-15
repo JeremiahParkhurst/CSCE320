@@ -15,7 +15,6 @@ import java.io.IOException;
 public class WinLossPopupView extends javax.swing.JPanel {
     GameViewController gvc;
     SignInViewController svc;
-    ConnectingViewController cvc;
     TitleViewController tvc;
     String ip = "152.117.243.155";
     
