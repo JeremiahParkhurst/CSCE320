@@ -37,8 +37,8 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @return 
+     * checks the priority board and finds the highest priority move
+     * @return an array containing the [row,col]
      */
     private int[] findMove(){
         int maxValue = 0;
@@ -63,7 +63,7 @@ public class AIPlayer {
     }
     
     /**
-     * 
+     * Sets the values on the priority board to select the best move
      */
     private void setValues(){
         int numberConnected1 = 0;
@@ -115,11 +115,11 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of a color in a vertical line going up
+     * @param row the starting row to look at
+     * @param col the starting col to look at
+     * @param lookingFor the color to look for
+     * @return the number of spaces occupied by the color you are looking for
      */
     private int toNorth(int row, int col, int lookingFor){
         int count = 0;
@@ -136,11 +136,11 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of a color in a vertical line going down
+     * @param row the starting row to look at
+     * @param col the starting col to look at
+     * @param lookingFor the color to look for
+     * @return the number of spaces occupied by the color you are looking for
      */
     private int toSouth(int row, int col, int lookingFor){        
         int count = 0;
@@ -157,11 +157,11 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of a color in a horizontal line going left
+     * @param row the starting row to look at
+     * @param col the starting col to look at
+     * @param lookingFor the color to look for
+     * @return the number of spaces occupied by the color you are looking for
      */
     private int toWest(int row, int col, int lookingFor){
         int count = 0;
@@ -178,11 +178,11 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of a color in a horizontal line going right
+     * @param row the starting row to look at
+     * @param col the starting col to look at
+     * @param lookingFor the color to look for
+     * @return the number of spaces occupied by the color you are looking for
      */
     private int toEast(int row, int col, int lookingFor){
         int count = 0;
@@ -199,11 +199,11 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of a color in a diagonal line going up and to the left
+     * @param row the starting row to look at
+     * @param col the starting col to look at
+     * @param lookingFor the color to look for
+     * @return the number of spaces occupied by the color you are looking for
      */
     private int toNorthWest(int row, int col, int lookingFor){
         int count = 0;
@@ -221,11 +221,11 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of a color in a diagonal line going down and to the right
+     * @param row the starting row to look at
+     * @param col the starting col to look at
+     * @param lookingFor the color to look for
+     * @return the number of spaces occupied by the color you are looking for
      */
     private int toSouthEast(int row, int col, int lookingFor){
         int count = 0;
@@ -241,13 +241,13 @@ public class AIPlayer {
         }
         return count;
     }
-    
+
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of a color in a diagonal line going up and to the right
+     * @param row the starting row to look at
+     * @param col the starting col to look at
+     * @param lookingFor the color to look for
+     * @return the number of spaces occupied by the color you are looking for
      */
     private int toNorthEast(int row, int col, int lookingFor){
         int count = 0;
@@ -265,11 +265,11 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of a color in a diagonal line going down and to the left
+     * @param row the starting row to look at
+     * @param col the starting col to look at
+     * @param lookingFor the color to look for
+     * @return the number of spaces occupied by the color you are looking for
      */
     private int toSouthWest(int row, int col, int lookingFor){
         int count = 0;
@@ -287,44 +287,44 @@ public class AIPlayer {
     }
     
     /**
-    * Recursive method that calls the toNorthSouth method
-     * @param rowStart, the starting row
-     * @param colStart, the starting column
-     * @param lookingFor
-     * @return 
+     * add the number of spaces occupied above and below the starting space
+     * @param rowStart  the starting row
+     * @param colStart  the stating col 
+     * @param lookingFor    the color you are looking for
+     * @return the sum of the two called methods
      */
     private int northSouth(int rowStart, int colStart, int lookingFor){
         return toNorth(rowStart,colStart,lookingFor) + toSouth(rowStart,colStart,lookingFor);
     }
     
     /**
-    * Recursive method that calls the toNorthEast method
-     * @param rowStart, the starting row
-     * @param colStart, the starting column
-     * @param lookingFor
-     * @return 
+     * add the number of spaces occupied left and right of the starting space
+     * @param rowStart  the starting row
+     * @param colStart  the stating col 
+     * @param lookingFor    the color you are looking for
+     * @return the sum of the two called methods
      */
     private int westEast(int rowStart, int colStart, int lookingFor){
         return toWest(rowStart,colStart,lookingFor) + toEast(rowStart,colStart,lookingFor);
     }
     
     /**
-     * Recursive method that calls the toNorthWest method
-     * @param rowStart, the starting row
-     * @param colStart, the starting column
-     * @param lookingFor
-     * @return 
+     * add the number of spaces occupied above and to the left to the right and below the starting space
+     * @param rowStart  the starting row
+     * @param colStart  the stating col 
+     * @param lookingFor    the color you are looking for
+     * @return the sum of the two called methods
      */
     private int northWestSouthEast(int rowStart, int colStart, int lookingFor){
         return toNorthWest(rowStart,colStart,lookingFor) + toSouthEast(rowStart,colStart,lookingFor);
     }
     
     /**
-     * Recursive method that calls the toNorthEast method
-     * @param rowStart, the starting row
-     * @param colStart, the starting column
-     * @param lookingFor
-     * @return 
+     * add the number of spaces occupied above and to the right to the left and below the starting space
+     * @param rowStart  the starting row
+     * @param colStart  the stating col 
+     * @param lookingFor    the color you are looking for
+     * @return the sum of the two called methods
      */
     private int northEastSouthWest(int rowStart, int colStart, int lookingFor){
         return toNorthEast(rowStart,colStart,lookingFor) + toSouthWest(rowStart,colStart,lookingFor);
