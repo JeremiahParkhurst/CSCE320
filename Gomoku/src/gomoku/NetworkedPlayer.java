@@ -7,8 +7,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Brendan
+ * This class creates the socket and has connection the GameViewController
+ * which it then listens to messages, while it listens to messages it will check
+ * for keys, and it will either update the chat box, handles turns, and win
+ * conditions.
  */
 public class NetworkedPlayer implements Runnable{
     Thread t;
@@ -24,8 +26,10 @@ public class NetworkedPlayer implements Runnable{
     boolean listening = true;
     
     /**
-     *
-     * @param s
+     * Constructor that links to the GameViewController and attempts to
+     * create a socket and initialize the input and output streams.
+     * @param s, the socket
+     * @param gameViewCon, the GameViewController
      */
     public NetworkedPlayer(Socket s, GameViewController gameViewCon){
         gvc = gameViewCon;
@@ -43,7 +47,7 @@ public class NetworkedPlayer implements Runnable{
     }
     
     /**
-     *
+     * Starts the thread.
      */
     public void starter(){
         t = new Thread(this);
@@ -51,7 +55,7 @@ public class NetworkedPlayer implements Runnable{
     }
     
     /**
-     *
+     * While the socket is connected, listen for new messages.
      */
     public void run() {
         while(sock.isConnected()){
@@ -60,8 +64,8 @@ public class NetworkedPlayer implements Runnable{
     }
     
     /**
-     *
-     * @param msg
+     * Turns the msg into bytes.
+     * @param msg,the message
      */
     public void sendMsg(String msg){
         byte[] b = msg.getBytes();
@@ -74,7 +78,7 @@ public class NetworkedPlayer implements Runnable{
     }
     
     /**
-     *
+     * Listens to messages
      */
     public void listen(){
         while(listening){
@@ -125,21 +129,5 @@ public class NetworkedPlayer implements Runnable{
                 break;
             }
         }
-    }
-    
-    /**
-     * returns the number of rows
-     * @return the rows
-     */
-    public String getRows() {
-        return row;
-    }
-    
-    /**
-     * returns the number of columns
-     * @return the columns
-     */
-    public String getColumns() {
-        return column;
     }
 }

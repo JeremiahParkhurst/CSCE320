@@ -37,8 +37,8 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @return 
+     * Find the highest priority value.
+     * @return returnValue, the row and column
      */
     private int[] findMove(){
         int maxValue = 0;
@@ -63,7 +63,7 @@ public class AIPlayer {
     }
     
     /**
-     * 
+     * This method sets the individual cells of the priortiy board.
      */
     private void setValues(){
         int numberConnected1 = 0;
@@ -115,11 +115,12 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of occupied cells above the initial row and column
+     * containing lookingFor.
+     * @param row, the row
+     * @param col, the column
+     * @param lookingFor, the color looking for
+     * @return count, the number of cells that contain that color
      */
     private int toNorth(int row, int col, int lookingFor){
         int count = 0;
@@ -136,11 +137,12 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
+     * Counts the number of occupied cells below the initial row and column
+     * containing lookingFor.
+     * @param row, the row
+     * @param col, the column
      * @param lookingFor
-     * @return 
+     * @return count, the number of cells that contain that color
      */
     private int toSouth(int row, int col, int lookingFor){        
         int count = 0;
@@ -157,11 +159,12 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of occupied cells left of the initial row and column
+     * containing lookingFor.
+     * @param row, the row
+     * @param col, the column
+     * @param lookingFor, the color looking for
+     * @return count, the number of cells that contain that color
      */
     private int toWest(int row, int col, int lookingFor){
         int count = 0;
@@ -178,11 +181,12 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of occupied cells right of the initial row and column
+     * containing lookingFor.
+     * @param row, the row
+     * @param col, the column
+     * @param lookingFor, the color looking for
+     * @return count, the number of cells that contain that color
      */
     private int toEast(int row, int col, int lookingFor){
         int count = 0;
@@ -199,11 +203,12 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of occupied cells northwest of the initial 
+     * row and column containing lookingFor.
+     * @param row, the row
+     * @param col, the column
+     * @param lookingFor, the color looking for
+     * @return count, the number of cells that contain that color
      */
     private int toNorthWest(int row, int col, int lookingFor){
         int count = 0;
@@ -221,11 +226,12 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of occupied cells southeast of the initial 
+     * row and column containing lookingFor.
+     * @param row, the row
+     * @param col, the column
+     * @param lookingFor, the color looking for
+     * @return count, the number of cells that contain that color
      */
     private int toSouthEast(int row, int col, int lookingFor){
         int count = 0;
@@ -243,11 +249,12 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of occupied cells north east of the initial 
+     * row and column containing lookingFor.
+     * @param row, the row
+     * @param col, the column
+     * @param lookingFor, the color looking for
+     * @return count, the number of cells that contain that color
      */
     private int toNorthEast(int row, int col, int lookingFor){
         int count = 0;
@@ -265,11 +272,12 @@ public class AIPlayer {
     }
     
     /**
-     * 
-     * @param row
-     * @param col
-     * @param lookingFor
-     * @return 
+     * Counts the number of occupied cells south west of the initial 
+     * row and column containing lookingFor.
+     * @param row, the row
+     * @param col, the column
+     * @param lookingFor, the color looking for
+     * @return count, the number of cells that contain that color
      */
     private int toSouthWest(int row, int col, int lookingFor){
         int count = 0;
@@ -287,44 +295,44 @@ public class AIPlayer {
     }
     
     /**
-    * Recursive method that calls the toNorthSouth method
+     * Calls toNorth and toSouth to check the above cell and bottom cell.
      * @param rowStart, the starting row
      * @param colStart, the starting column
-     * @param lookingFor
-     * @return 
+     * @param lookingFor, the color
+     * @return count, the number of cells that contain that color
      */
     private int northSouth(int rowStart, int colStart, int lookingFor){
         return toNorth(rowStart,colStart,lookingFor) + toSouth(rowStart,colStart,lookingFor);
     }
     
     /**
-    * Recursive method that calls the toNorthEast method
+     * Calls toWest and toEast to check the left and right cells
      * @param rowStart, the starting row
      * @param colStart, the starting column
-     * @param lookingFor
-     * @return 
+     * @param lookingFor, the color
+     * @return count, the number of cells that contain that color
      */
     private int westEast(int rowStart, int colStart, int lookingFor){
         return toWest(rowStart,colStart,lookingFor) + toEast(rowStart,colStart,lookingFor);
     }
     
     /**
-     * Recursive method that calls the toNorthWest method
+     * Calls toNorthWest and toSouthEast
      * @param rowStart, the starting row
      * @param colStart, the starting column
-     * @param lookingFor
-     * @return 
+     * @param lookingFor, the color
+     * @return count, the number of cells that contain that color
      */
     private int northWestSouthEast(int rowStart, int colStart, int lookingFor){
         return toNorthWest(rowStart,colStart,lookingFor) + toSouthEast(rowStart,colStart,lookingFor);
     }
     
     /**
-     * Recursive method that calls the toNorthEast method
+     * Calls toNorthEast and toSouthWest
      * @param rowStart, the starting row
      * @param colStart, the starting column
-     * @param lookingFor
-     * @return 
+     * @param lookingFor, the color
+     * @return count, the number of cells that contain that color
      */
     private int northEastSouthWest(int rowStart, int colStart, int lookingFor){
         return toNorthEast(rowStart,colStart,lookingFor) + toSouthWest(rowStart,colStart,lookingFor);
