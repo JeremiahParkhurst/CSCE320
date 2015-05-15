@@ -13,16 +13,15 @@ import javax.swing.JTextArea;
 
 /**
  * The GameView sends information to the GameController when an action is
- * preformed, such as when the user selects presses enter to send a message
+ * preformed, such as when the user selects send message to send a message
  * that they have typed in the textField, which will be displayed to the the
- * textArea by calling the txtToSend action listener in this class which calls
- * the txtToSend method in the GameViewController.
+ * textArea by calling the actionlistener methods in this class which calls
+ * the methods in the GameController.
  * This class also has the view of the chat components and some of the
  * GameBoardView components, such as a text area to display whether a valid move
- * has been made, and whose turn it is. The send move button is also located in 
- * view which calls the sendViewButtonChosen method within the GameViewController
- * which checks to see if the move is valid, or whether there is a win
- * condition that has been met.
+ * has been made.
+ * This view has the send message button and the game board which displays
+ * the Gomoku game, and a Turn indicator textArea that displays whose turn it is
  */
 public class GameView extends javax.swing.JPanel {
     GameViewController vcon;
@@ -173,8 +172,7 @@ public class GameView extends javax.swing.JPanel {
     /**
      * Appends the player's username and their message to the txtLog
      * Clears the txtToSend textArea after the message has been sent
-     * @param evt, when the user presses enter after they have entered their
-     * message within the text area.
+     * @param evt
      */
     private void txtToSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtToSendActionPerformed
         String msg = txtToSend.getText();

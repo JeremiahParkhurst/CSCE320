@@ -14,7 +14,7 @@ import javax.swing.JTextArea;
 /**
  * The GameViewBoard displays the Gomoku game board that consists of JButtons
  * with reference to the row and column and changes color depending on the 
- * player's input. The boardSize is passed in from the GameView.
+ * player's input.
  */
 public class GameViewBoard extends JPanel{
     private int row, col;
