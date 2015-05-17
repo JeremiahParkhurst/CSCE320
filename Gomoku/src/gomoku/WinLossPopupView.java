@@ -16,7 +16,8 @@ public class WinLossPopupView extends javax.swing.JPanel {
     GameViewController gvc;
     SignInViewController svc;
     TitleViewController tvc;
-    String ip = "152.117.243.155";
+    Gomoku go;
+    String ip = go.IPaddress;
     
     /**
      * Creates new form WinLossPopupView2

@@ -21,7 +21,7 @@ public class MatchmakingViewController implements Runnable{
     ArrayList<String> onlineUsers;
     ArrayList<String> recInvites;
     ArrayList<String> sentInvites;
-    SignInViewController vc;
+    SignInViewController svc;
     InputStream in;
     OutputStream out;
     String msg;
@@ -52,7 +52,7 @@ public class MatchmakingViewController implements Runnable{
         sentInvites = new ArrayList<>();
         
         buffer = new byte[size];
-        vc = vcon;
+        svc = vcon;
         onlineUsers = users;
         USERNAME = username;
         
@@ -132,7 +132,7 @@ public class MatchmakingViewController implements Runnable{
      */
     public void menuBtn(){
         hideView();
-        vc.vcon.showView();
+        svc.tvc.showView();
     }
     
     /**
@@ -214,7 +214,7 @@ public class MatchmakingViewController implements Runnable{
             System.out.println("IP: " + ip);
             String playerBusy = "B, " + USERNAME + "\n";
             sendMsg(playerBusy);
-            GameViewController gameViewCon = new GameViewController(ip,USERNAME,vc,bSize);
+            GameViewController gameViewCon = new GameViewController(ip,USERNAME,svc,bSize);
             gameViewCon.showView();
             this.hideView();
         }
@@ -281,7 +281,7 @@ public class MatchmakingViewController implements Runnable{
         sendMsg(accept);
         String playerBusy = "B, " + USERNAME + "\n";
         sendMsg(playerBusy);
-        GameViewController gameViewCon = new GameViewController(USERNAME,vc,boardSize);
+        GameViewController gameViewCon = new GameViewController(USERNAME,svc,boardSize);
         gameViewCon.showView();
         this.hideView();
         

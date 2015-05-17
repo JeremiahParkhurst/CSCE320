@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 public class DifficultyViewController implements ViewController{
     private DifficultyView view;
     private JFrame app;
-    private TitleViewController vcon;
+    private TitleViewController tvc;
     
     /**
      * Constructor, initializes the DifficultyViewController
@@ -28,7 +28,7 @@ public class DifficultyViewController implements ViewController{
         app.setContentPane(view);
         app.pack();
         app.setResizable(false);
-        vcon = vc;
+        tvc = vc;
     }
     
     /**
@@ -51,7 +51,7 @@ public class DifficultyViewController implements ViewController{
     public void mainMenu(){
         System.out.println("Entered teh main menu function");
         this.hideView();
-        vcon.showView();
+        tvc.showView();
     }
     
     /**

@@ -4,6 +4,7 @@ import gomoku.GameViewBoard.MyJButton;
 import gomoku.GameViewModel.Cell;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -29,8 +30,8 @@ public class GameViewController implements Runnable{
     private GameViewBoard view2;
     private GameViewModel gmod;
     private WinLossPopupView winloss;
-    private SignInViewController vc;
-    private DifficultyViewController vcon;
+    private SignInViewController svc;
+    private DifficultyViewController dvc;
     private JFrame app;
     private JFrame WLView;
     public ServerSocket serverSocket;
@@ -41,7 +42,7 @@ public class GameViewController implements Runnable{
     private final int SIZE = 1024;
     private byte[] buffer;
     private boolean hasServerSocket;
-    private NetworkedPlayer p2;
+    private NetworkedPlayer nwp;
     public boolean connected = false;
     public int dif = -1;
     public AIPlayer ai;
@@ -65,7 +66,7 @@ public class GameViewController implements Runnable{
         app.pack();
         app.setResizable(false);
         app.setBackground(new Color(204,204,255));
-        vcon = vc;
+        dvc = vc;
         dif = difficulty;
         ai = new AIPlayer(dif);
         enableTurn();
@@ -79,7 +80,7 @@ public class GameViewController implements Runnable{
      * create a server socket, and allows this player to make the first move
      * within the Gomoku game.
      */
-    public GameViewController(String username, SignInViewController svc, int boardSize){
+    public GameViewController(String username, SignInViewController vc, int boardSize){
         view = new GameView(this);
         view2 = new GameViewBoard(this, boardSize);
         gmod = new GameViewModel(view2.boardSize, view2.boardSize);
@@ -90,7 +91,7 @@ public class GameViewController implements Runnable{
         app.pack();
         app.setBackground(new Color(204,204,255));
         buffer = new byte[SIZE];
-        vc = svc;
+        svc = vc;
         
         try {
             serverSocket = new ServerSocket(8080);
@@ -118,7 +119,7 @@ public class GameViewController implements Runnable{
      * GameViewController, which will be passed onto the GameViewBoard to set
      * the size of the board for the Gomoku game.
      */
-    public GameViewController(String IP, String username, SignInViewController svc, int boardSize){
+    public GameViewController(String IP, String username, SignInViewController vc, int boardSize){
         view = new GameView(this);
         view2 = new GameViewBoard(this, boardSize);
         gmod = new GameViewModel(view2.boardSize, view2.boardSize);
@@ -129,17 +130,17 @@ public class GameViewController implements Runnable{
         app.pack();
         app.setBackground(new Color(204,204,255));
         buffer = new byte[SIZE];
-        vc = svc;
+        svc = vc;
         
         try {
             socket = new Socket(IP,8080);
             in = socket.getInputStream();
             out = socket.getOutputStream();
             System.out.println("IP now:" + IP);
-            p2 = new NetworkedPlayer(socket, this);
+            nwp = new NetworkedPlayer(socket, this);
             in = socket.getInputStream();
             out = socket.getOutputStream();
-            p2.starter();
+            nwp.starter();
             enableTurn();
         } catch (IOException ex) {
             System.out.println("Could not connect to other player");
@@ -187,10 +188,10 @@ public class GameViewController implements Runnable{
             try{
                 socket = serverSocket.accept();
                 System.out.println("Connection to other player made.");
-                p2 = new NetworkedPlayer(socket, this);
+                nwp = new NetworkedPlayer(socket, this);
                 in = socket.getInputStream();
                 out = socket.getOutputStream();
-                p2.starter();
+                nwp.starter();
                 connected = true;
             }
             catch(IOException ex){
@@ -219,7 +220,7 @@ public class GameViewController implements Runnable{
      * Displays the loss menu when the player loses.
      */
     public void showLoss(){
-        winloss = new WinLossPopupView(this,vc);
+        winloss = new WinLossPopupView(this,svc);
         WLView = new JFrame("End Game");
         WLView.add(winloss);
         WLView.pack();
@@ -234,7 +235,7 @@ public class GameViewController implements Runnable{
      * Display the win menu when the player wins.
      */
     public void showWin(){
-        winloss = new WinLossPopupView(this,vc);
+        winloss = new WinLossPopupView(this,svc);
         WLView = new JFrame("End Game");
         WLView.add(winloss);
         WLView.pack();
@@ -249,7 +250,7 @@ public class GameViewController implements Runnable{
      * Displays the loss menu when the player loses.
      */
     public void showSingleLoss(){
-        winloss = new WinLossPopupView(this,vc);
+        winloss = new WinLossPopupView(this,svc);
         WLView = new JFrame("End Game");
         WLView.add(winloss);
         WLView.pack();
@@ -264,7 +265,7 @@ public class GameViewController implements Runnable{
      * Display the win menu when the player wins.
      */
     public void showSingleWin(){
-        winloss = new WinLossPopupView(this,vc);
+        winloss = new WinLossPopupView(this,svc);
         WLView = new JFrame("End Game");
         WLView.add(winloss);
         WLView.pack();
@@ -272,7 +273,26 @@ public class GameViewController implements Runnable{
         WLView.setVisible(true);
         winloss.winLossJTextArea.setText("You Win!!!"); // Displays the winning message.
         winloss.winLossJTextArea.setEditable(false);
-        winloss.mmButton.setVisible(false); // Hides the Return To Matchmaking Button
+        winloss.tvButton.setVisible(false); // Hides the Return to TitleViewButton
+    }
+    
+    /**
+     * This method is called by the networked player if your opponent leaves during the game.
+     * It will take give the player a popup for exiting to the matchmaking screen.
+     */
+    public void showPlayerDiscon(){
+        winloss = new WinLossPopupView(this,svc);
+        WLView = new JFrame("Player Left");
+        WLView.add(winloss);
+        WLView.pack();
+        WLView.setResizable(false);
+        WLView.setVisible(true);
+        Font font = winloss.winLossJTextArea.getFont(); // retreive font in order to change size
+        float size = font.getSize() - 30.0f; // make font size smaller
+        winloss.winLossJTextArea.setFont(font.deriveFont(size)); // set the smaller font size
+        winloss.winLossJTextArea.setText("Opponent Left Game"); // Display opponent left message
+        winloss.winLossJTextArea.setEditable(false);
+        winloss.tvButton.setVisible(false); // Hides the Return to TitleViewButton
     }
     
     /**
@@ -346,11 +366,12 @@ public class GameViewController implements Runnable{
             
             if(gameOver(view2.square) == false){
                 disableTurn();
-                p2.sendMsg(stringT); // sends T, row, column
+                nwp.sendMsg(stringT); // sends T, row, column
             }
             else{
                 showWin();
-                p2.sendMsg(stringW);
+                nwp.sendMsg(stringW);
+                nwp.winConMet = true;
             }
         }
         else{ // for offline gameplay

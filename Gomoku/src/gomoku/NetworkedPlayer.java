@@ -24,6 +24,7 @@ public class NetworkedPlayer implements Runnable{
     String row;
     String column;
     boolean listening = true;
+    boolean winConMet = false;
     
     /**
      * Constructor that links to the GameViewController and attempts to
@@ -103,6 +104,7 @@ public class NetworkedPlayer implements Runnable{
                         gvc.enableTurn();
                     }
                     if(msg.charAt(0) == 'W'){ // W, row, column \n
+                        winConMet = true;
                         // Following 6 lines used to get r and c into integers for the updateGrid call
                         String profile = msg.substring(4, msg.length()-1);
                         Scanner scan = new Scanner(profile).useDelimiter("\\s*,\\s*");
@@ -125,6 +127,9 @@ public class NetworkedPlayer implements Runnable{
                     sock.close();
                 } catch (IOException ex1) {
                     System.out.println("Could not close the Networked Players socket");
+                }
+                if(winConMet != true){ // check to see if there was a win condition
+                    gvc.showPlayerDiscon(); // display win loss for player disconnect if no win condition met
                 }
                 break;
             }

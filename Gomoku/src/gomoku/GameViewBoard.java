@@ -20,7 +20,7 @@ public class GameViewBoard extends JPanel{
     private int row, col;
     public MyJButton[][] square;
     private GameViewModel current;
-    private GameViewController gcon;
+    private GameViewController gvc;
     public int boardSize = 20;
     public Color boardColor = new Color(204,204,255);
     private final int MAX_COUNT = 1; //maximum number of moves
@@ -31,7 +31,7 @@ public class GameViewBoard extends JPanel{
      * @param con, the GameViewController
      */
     public GameViewBoard(GameViewController con, int size){
-        gcon = con;
+        gvc = con;
         boardSize = size;
         row = boardSize;
         col = boardSize;
@@ -93,17 +93,17 @@ public class GameViewBoard extends JPanel{
             if(button.getBackground().equals(Color.YELLOW)){
                 button.setBackground(boardColor);
                 count = 0;
-                gcon.moveDeselected();
+                gvc.moveDeselected();
             }
             
             //if the user makes a move that is not an open space
             else if(button.getBackground().equals(Color.WHITE) || button.getBackground().equals(Color.BLACK)){
-                gcon.invalidMoveMsg();
+                gvc.invalidMoveMsg();
             }
             //the move is successful (no cell is not marked by a player)
             else if(MAX_COUNT != count){
                 button.setBackground(Color.YELLOW);
-                gcon.validMoveMsg();
+                gvc.validMoveMsg();
                 count++; 
             }
         }

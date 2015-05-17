@@ -20,7 +20,6 @@ public class GameViewModel {
     public static final int yellow = 1; // tentative move piece
     public static final int black = 2; // your board piece
     public static final int white = 3;  // opponent board piece
-    GameViewController gcon;
     
     /**
      * Constructor

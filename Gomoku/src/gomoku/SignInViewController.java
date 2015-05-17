@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 class SignInViewController implements Runnable{
     SignInView view;
     JFrame app;
-    public TitleViewController vcon;
+    public TitleViewController tvc;
     
     Socket s;
     InputStream in;
@@ -27,7 +27,7 @@ class SignInViewController implements Runnable{
     
     private byte[] buffer;
     private final int size = 1024;
-    MatchmakingViewController mvcon;
+    MatchmakingViewController mvc;
     
     ArrayList<String> onlineUsers;
     String USERNAME = "";
@@ -46,7 +46,7 @@ class SignInViewController implements Runnable{
         app.setContentPane(view);
         app.pack();
         app.setResizable(false);
-        vcon = vc;
+        tvc = vc;
         
         buffer = new byte[size];
         
@@ -85,7 +85,7 @@ class SignInViewController implements Runnable{
      * Hides this view and opens the TitleView
      */
     public void mainMenu(){
-        vcon.showView();
+        tvc.showView();
         this.hideView();
     }
     
@@ -172,8 +172,8 @@ class SignInViewController implements Runnable{
         }
         else{
             System.out.println("Something else was picked up in SignInView");
-            if(mvcon != null){
-                mvcon.proccessMsg(msg);
+            if(mvc != null){
+                mvc.proccessMsg(msg);
             }
             return false;
         }
@@ -194,8 +194,8 @@ class SignInViewController implements Runnable{
             if(read > 0){
                 String str = new String(buffer, 0, read);
                 if(processRead(str)){
-                    mvcon = new MatchmakingViewController(this, onlineUsers,s,USERNAME);
-                    mvcon.showView();
+                    mvc = new MatchmakingViewController(this, onlineUsers,s,USERNAME);
+                    mvc.showView();
                     this.hideView();
                 }
                 else{

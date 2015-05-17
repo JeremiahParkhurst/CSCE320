@@ -10,10 +10,12 @@ public class Gomoku {
     public static void main(String[] args) {
         String ip = "";
         if(args.length >= 1){
+            IPaddress = ip;
             ip = args[0];
         }
         else{
-            ip = "152.117.243.155";
+            IPaddress = ip;
+            ip = "152.117.242.102";
         }
         TitleViewController vc = new TitleViewController(ip);
         IPaddress = ip;

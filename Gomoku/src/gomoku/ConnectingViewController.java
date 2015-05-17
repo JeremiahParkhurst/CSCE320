@@ -13,7 +13,7 @@ import javax.swing.JFrame;
  */
 public class ConnectingViewController implements Runnable{
     private Socket s;
-    private TitleViewController from;
+    private TitleViewController tvc;
     ConnectingView view;
     JFrame app;
     Thread t;
@@ -39,7 +39,7 @@ public class ConnectingViewController implements Runnable{
         app.setContentPane(view);
         app.pack();
         app.setResizable(false);
-        from = tView;
+        tvc = tView;
         attempt = 0;
     }
     
@@ -79,7 +79,7 @@ public class ConnectingViewController implements Runnable{
      * Hides the this view.
      */
     private void connectionEstablished(){
-        SignInViewController signIn = new SignInViewController(from,s);
+        SignInViewController signIn = new SignInViewController(tvc,s);
         signIn.showView();
         this.hideView();
     }
@@ -91,7 +91,7 @@ public class ConnectingViewController implements Runnable{
      * Hides the this view.
      */
     private void connectionReEstablished(){
-        SignInViewController signIn = new SignInViewController(from,s);
+        SignInViewController signIn = new SignInViewController(tvc,s);
         signIn.SendLoginRequest(rejoinUser, rejoinPass);
         this.hideView();
     }
@@ -142,6 +142,6 @@ public class ConnectingViewController implements Runnable{
      */
     public void goBack(){
         this.hideView();
-        from.showView();
+        tvc.showView();
     }
 }
