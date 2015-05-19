@@ -28,6 +28,7 @@ public class TitleViewController implements ViewController{
         app.setContentPane(view);
         app.pack();
         app.setResizable(false);
+        view.ipTF.setText(IP);
     }
     
     /**
@@ -67,6 +68,7 @@ public class TitleViewController implements ViewController{
      * Transitions to the SignInView
      */
     public void multiPlayerChosen(){
+        IP = view.ipTF.getText();
         ConnectingViewController connecting = new ConnectingViewController(this, IP);
         connecting.showView();
         this.hideView();

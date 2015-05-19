@@ -38,6 +38,8 @@ public class TitleView extends javax.swing.JPanel {
         singleButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnExit = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        ipTF = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(204, 204, 255));
 
@@ -66,6 +68,8 @@ public class TitleView extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setText("Change IP Address:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -78,6 +82,12 @@ public class TitleView extends javax.swing.JPanel {
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(singleButton, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(79, 79, 79)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(ipTF, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,7 +100,11 @@ public class TitleView extends javax.swing.JPanel {
                 .addComponent(multiButton)
                 .addGap(18, 18, 18)
                 .addComponent(btnExit)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(ipTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23))
         );
     }// </editor-fold>//GEN-END:initComponents
     
@@ -120,7 +134,9 @@ public class TitleView extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
+    public javax.swing.JTextField ipTF;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JButton multiButton;
     private javax.swing.JButton singleButton;
     // End of variables declaration//GEN-END:variables

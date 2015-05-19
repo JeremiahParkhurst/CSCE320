@@ -224,11 +224,17 @@ public class MatchmakingView extends javax.swing.JPanel {
         if(boardSize == 4){
             size = 35;
         }
-        String from = requestList.getSelectedValue().toString();
-        if(from == null){
-            from = requestList.getComponent(0).toString();
+        String from = null;
+        try{
+            from = requestList.getSelectedValue().toString();
         }
-        vcon.acceptInvite(from,size);
+        catch(NullPointerException np){
+            System.out.println("You must select a player before accepting");
+        }
+        if(from != null){
+            vcon.acceptInvite(from,size);
+        }
+        
     }//GEN-LAST:event_acceptButtonActionPerformed
     
     /**

@@ -40,6 +40,12 @@ public class GameViewModel {
         }
     }
     
+    /**
+     * Update grid will update the grid model to the color number specified 
+     * @param row row of the grid
+     * @param col col of the grid
+     * @param color background color of square
+     */
     public void updateGrid(int row, int col, int color){
         if(color == 0){
             grid[row][col] = 2;
