@@ -58,9 +58,7 @@ public class ConnectingViewController implements Runnable{
      * @param pass The password of the previously logged in player
      */
     public void reJoinView(String user, String pass){
-        if(user != null && pass != null){
-            checkUser = true;
-        }
+        checkUser = true;
         rejoinUser = user;
         rejoinPass = pass;
         starter();
@@ -80,6 +78,7 @@ public class ConnectingViewController implements Runnable{
      */
     private void connectionEstablished(){
         SignInViewController signIn = new SignInViewController(tvc,s);
+        signIn.previousIP = IP;
         signIn.showView();
         this.hideView();
     }

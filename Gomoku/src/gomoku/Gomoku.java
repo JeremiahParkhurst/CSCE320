@@ -11,11 +11,9 @@ public class Gomoku {
         String ip = "";
         
         if(args.length >= 1){
-            IPaddress = ip;
             ip = args[0];
         }
         else{
-            IPaddress = ip;
             ip = "152.117.243.155";
         }
         TitleViewController vc = new TitleViewController(ip);

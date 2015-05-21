@@ -34,6 +34,7 @@ class SignInViewController implements Runnable{
     // username and password accessed by WinLossPopupView for returning to matchmaking
     String globalUser; 
     String globalPassword;
+    String previousIP;
     
     /**
      * Constructor initializes the SignInViewController

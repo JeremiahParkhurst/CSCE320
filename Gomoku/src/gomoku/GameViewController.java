@@ -273,7 +273,7 @@ public class GameViewController implements Runnable{
         WLView.setVisible(true);
         winloss.winLossJTextArea.setText("You Win!!!"); // Displays the winning message.
         winloss.winLossJTextArea.setEditable(false);
-        winloss.tvButton.setVisible(false); // Hides the Return to TitleViewButton
+        winloss.mmButton.setVisible(false); // Hides the Return to TitleViewButton
     }
     
     /**
@@ -281,6 +281,7 @@ public class GameViewController implements Runnable{
      * It will take give the player a popup for exiting to the matchmaking screen.
      */
     public void showPlayerDiscon(){
+        disableTurn();
         winloss = new WinLossPopupView(this,svc);
         WLView = new JFrame("Player Left");
         WLView.add(winloss);

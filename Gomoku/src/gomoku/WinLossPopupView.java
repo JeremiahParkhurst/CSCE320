@@ -16,8 +16,7 @@ public class WinLossPopupView extends javax.swing.JPanel {
     GameViewController gvc;
     SignInViewController svc;
     TitleViewController tvc;
-    Gomoku go;
-    String ip = go.IPaddress;
+    String ip = "";
     
     /**
      * Creates new form WinLossPopupView2
@@ -92,6 +91,7 @@ public class WinLossPopupView extends javax.swing.JPanel {
      * @param evt, when the "Return to Matchmaking" button is chosen
      */
     private void mmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmButtonActionPerformed
+        ip = svc.previousIP;
         tvc = new TitleViewController(ip);
         tvc.rejoinMultiPlayer(svc.globalUser, svc.globalPassword);
         gvc.hideView(); // hides game view and popup view
